@@ -1,2 +1,2 @@
-#! /bin/bash
-go build main.go && ./main
+#! /usr/bin/env bash
+go run main.go 
