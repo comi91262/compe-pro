@@ -6,19 +6,18 @@ import (
 	"os"
 )
 
-var dist [2001]struct{ ns []int }
+var g [][]int
+var memo []bool
 
-func search(n int, node *[]int) {
-	var slice = dist[n].ns
-
-	if (*node)[n] > 0 {
+func dfs(n int) {
+	if memo[n] {
 		return
 	}
 
-	(*node)[n] = 1
+	memo[n] = true
 
-	for _, b := range slice {
-		search(b, node)
+	for _, next := range g[n] {
+		dfs(next)
 	}
 }
 
@@ -30,19 +29,24 @@ func main() {
 	var n, m int
 	fmt.Fscan(reader, &n, &m)
 
+	g = make([][]int, n+1)
 	var a, b int
 	for i := 0; i < m; i++ {
 		fmt.Fscan(reader, &a, &b)
-		dist[a].ns = append(dist[a].ns, b)
+		g[a] = append(g[a], b)
 	}
 
 	sum := 0
+	memo = make([]bool, n+1)
 	for i := 1; i < n+1; i++ {
-		var node = make([]int, n+1)
-		search(i, &node)
+		for j := 0; j < len(memo); j++ {
+			memo[j] = false
+		}
+
+		dfs(i)
 
 		for j := 1; j < n+1; j++ {
-			if node[j] > 0 {
+			if memo[j] {
 				sum++
 			}
 		}
