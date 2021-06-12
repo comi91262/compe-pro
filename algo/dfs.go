@@ -1,86 +1,30 @@
-package main
-
-import (
-	"fmt"
-)
-
 var g [][]int
-var memo []bool
+var a, b []int
 
-func dfs(n int) {
-	if memo[n] {
-		return
-	}
-	memo = true
-
+func dfs(n, pre int) {
 	for _, next := range g[n] {
-		dfs(next)
-	}
-}
-
-func main() {
-	var n, m int
-	fmt.Fscan(reader, &n, &m)
-
-	g = make([][]int, n+1)
-	var a, b int
-	for i := 0; i < m; i++ {
-		fmt.Fscan(reader, &a, &b)
-		g[a] = append(g[a], b)
-	}
-
-}
-package main
-
-import (
-	"bufio"
-	"fmt"
-	"os"
-)
-
-var g [][]int
-var memo []int
-
-func dfs(n int, d int) (int, int) {
-	memo[n]++
-
-	mn := n
-	md := d
-	for _, next := range g[n] {
-		if memo[next] > 0 {
+		if pre == next {
 			continue
 		}
 
-		var md2, mn2 = dfs(next, d+1)
-		if md < md2 {
-			md = md2
-			mn = mn2
-		}
+		dfs(next, n)
 	}
 
-	return md, mn
 }
 
-func main() {
-	reader := bufio.NewReader(os.Stdin)
-	writer := bufio.NewWriter(os.Stdout)
-	defer writer.Flush()
-
+func input() {
 	var n int
 	fmt.Fscan(reader, &n)
 
 	g = make([][]int, n+1)
+	a = make([]int, n+1)
+	b = make([]int, n+1)
 
-	var x, y int
 	for i := 1; i < n; i++ {
-		fmt.Fscan(reader, &x, &y)
-		g[x] = append(g[x], y)
-		g[y] = append(g[y], x)
+		fmt.Fscan(reader, &a[i], &b[i])
+		g[a[i]] = append(g[a[i]], b[i])
+		g[b[i]] = append(g[b[i]], a[i])
 	}
 
-	memo = make([]int, n+1)
-	var _, mn = dfs(1, 0)
-
-	fmt.Fprintf(writer, "%v\n", md+1)
+	dfs(1, 1)
 }
-
