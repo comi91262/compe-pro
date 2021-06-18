@@ -12,15 +12,10 @@ var writer = bufio.NewWriter(os.Stdout)
 func main() {
 	defer writer.Flush()
 
-	var n int
-	fmt.Fscan(reader, &n)
+	var n, k int
+	fmt.Fscan(reader, &n, &k)
 
-	var a = make([]int, n)
-	for i := 0; i < n; i++ {
-		fmt.Fscan(reader, &a[i])
-	}
-
-	fmt.Fprintf(writer, "%v\n", ans)
+	fmt.Fprintf(writer, "%d\n", n)
 }
 
 // var n int
@@ -33,7 +28,7 @@ func main() {
 //	for i := 0; i < n; i++ {
 //		fmt.Fscan(reader, &a[i])
 //	}
-// const MAX = 1_000_000_000 + 7
+// const d = 1_000_000_000 + 7
 // for i := 0; i < n; i++ {
 // for j := 0; j < n; j++ {
 // }
