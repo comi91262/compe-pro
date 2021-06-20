@@ -1,4 +1,6 @@
-package main
+package algo
+
+import "math"
 
 // fibonacci heap implemeted by https://github.com/theodesp/go-heaps
 type Item interface {
@@ -162,36 +164,29 @@ func (a Vertex) Compare(b Item) int {
 	}
 }
 
-var g [100001][]Edge
-var d [100001]int
-
-const INF = 1 << 60
-
-func dijkstra(start int) {
-	for i := 0; i < len(d); i++ {
-		d[i] = INF
+func dijkstra(start int, g *[][]Edge, d *[]int) {
+	for i := 0; i < len((*d)); i++ {
+		(*d)[i] = math.MaxInt64
 	}
-	d[start] = 0
+	(*d)[start] = 0
 
 	heap := &FibonacciHeap{}
 	heap.Insert(Vertex{value: start, priority: 0})
 
 	for heap.FindMin() != nil {
 		v := heap.DeleteMin().(Vertex).value
-		for _, e := range g[v] {
-			if d[e.to] > d[v]+e.cost {
-				d[e.to] = d[v] + e.cost
-				heap.Insert(Vertex{value: e.to, priority: d[e.to]})
+		for _, e := range (*g)[v] {
+			if (*d)[e.to] > (*d)[v]+e.cost {
+				(*d)[e.to] = (*d)[v] + e.cost
+				heap.Insert(Vertex{value: e.to, priority: (*d)[e.to]})
 			}
 		}
 	}
 }
 
-func main() {
-	for i := 0; i < m; i++ {
-		g[a] = append(g[a], Edge{to: b, cost: c})
-		g[b] = append(g[b], Edge{to: a, cost: c})
-	}
-
-	dijkstra(1)
-}
+//	for i := 0; i < m; i++ {
+//		g[a] = append(g[a], Edge{to: b, cost: c})
+//		g[b] = append(g[b], Edge{to: a, cost: c})
+//	}
+//
+//	dijkstra(1)

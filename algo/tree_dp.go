@@ -1,7 +1,8 @@
-var dp [100001]int
-var g [][]int
+package algo
 
-func dfs(n, pre int) {
+func treeDp(n, pre int) {
+	var dp [100001]int
+	var g [][]int
 	dp[n]++
 
 	for _, next := range g[n] {
@@ -9,7 +10,7 @@ func dfs(n, pre int) {
 			continue
 		}
 
-		dfs(next, n)
+		treeDp(next, n)
 		dp[n] += dp[next]
 	}
 

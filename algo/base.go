@@ -1,3 +1,5 @@
+package algo
+
 // 123 -> [3,2,1] (10)
 func strToDigits(s string) []int {
 	ans := make([]int, len(s))
@@ -30,4 +32,3 @@ func toNumber(a []int, base int) int {
 	}
 	return ans
 }
-

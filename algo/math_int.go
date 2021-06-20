@@ -1,5 +1,11 @@
+package algo
+
 func abs(x int) int {
-	return int(math.Abs(float64(x)))
+	if x >= 0 {
+		return x
+	} else {
+		return x * -1
+	}
 }
 
 func gcd(a, b int) int {
@@ -9,25 +15,40 @@ func gcd(a, b int) int {
 	return gcd(b, a%b)
 }
 
-func fact(n int) int {
-	if n == 1 {
-		return 1
-	} else {
-		return n * fact(n-1)
+func permutation(n int, k int) int {
+	if n < k {
+		return 0
 	}
+
+	prod := 1
+	for k > 0 {
+		prod *= n - k + 1
+		k--
+	}
+	return prod
 }
 
-func combination(n int, r int) int {
-	return fact(n) / fact(r) * fact(n-r)
+func combination(n int, k int) int {
+	return permutation(n, k) / permutation(k, k)
 }
 
-func min(x, y int) int {
-	return int(math.Min(float64(x), float64(y)))
-}
+/// func min(x, y int) int {
+/// 	if x <= y {
+/// 		return x
+/// 	} else {
+/// 		return y
+/// 	}
+/// }
 
-func min(x, y, z int) int {
-	var m = int(math.Min(float64(x), float64(y)))
-	return int(math.Min(float64(m), float64(z)))
+// x = y のとき 一番左のものを返す (std::min)
+func min(arg ...int) int {
+	min := arg[0]
+	for _, x := range arg {
+		if min > x {
+			min = x
+		}
+	}
+	return min
 }
 
 func mod(x, y int) int {

@@ -1,3 +1,5 @@
+package algo
+
 type Node struct {
 	value       string
 	left, right *Node
@@ -40,11 +42,3 @@ func insertNode(node *Node, x string) *Node {
 	}
 	return node
 }
-
-func main() {
-	var t *Node
-	if !searchNode(t, s[i]) {
-		t = insertNode(t, s[i])
-	}
-}
-

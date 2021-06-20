@@ -1,4 +1,4 @@
-package main
+package algo
 
 func swap(a []int, i, j int) {
 	a[i], a[j] = a[j], a[i]

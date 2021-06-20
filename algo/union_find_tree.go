@@ -1,3 +1,5 @@
+package algo
+
 var parent []int
 var rank []int
 
@@ -24,9 +26,9 @@ func same(x, y int) bool {
 	return root(x) == root(y)
 }
 
-func unite(x, y int) {
-	x := root(x)
-	y := root(y)
+func unite(cx, cy int) {
+	x := root(cx)
+	y := root(cy)
 
 	if x == y {
 		return
@@ -41,4 +43,3 @@ func unite(x, y int) {
 		rank[x]++
 	}
 }
-
