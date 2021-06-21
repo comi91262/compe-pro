@@ -32,14 +32,6 @@ func combination(n int, k int) int {
 	return permutation(n, k) / permutation(k, k)
 }
 
-/// func min(x, y int) int {
-/// 	if x <= y {
-/// 		return x
-/// 	} else {
-/// 		return y
-/// 	}
-/// }
-
 // x = y のとき 一番左のものを返す (std::min)
 func min(arg ...int) int {
 	min := arg[0]
@@ -49,6 +41,16 @@ func min(arg ...int) int {
 		}
 	}
 	return min
+}
+
+func max(arg ...int) int {
+	max := arg[0]
+	for _, x := range arg {
+		if max < x {
+			max = x
+		}
+	}
+	return max
 }
 
 func mod(x, y int) int {
@@ -65,8 +67,11 @@ func mod(x, y int) int {
 func pow(a, x int) int {
 	r := 1
 	for x > 0 {
-		r *= a
-		x--
+		if x&1 == 1 {
+			r *= a
+		}
+		a *= a
+		x >>= 1
 	}
 	return r
 }

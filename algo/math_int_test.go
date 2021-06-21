@@ -117,3 +117,19 @@ func TestMin5(t *testing.T) {
 		t.Errorf("error: 5")
 	}
 }
+
+func TestPow0(t *testing.T) {
+	got := pow(3, 2)
+	want := 9
+	if got != want {
+		t.Errorf("error: 0")
+	}
+}
+
+func TestPow1(t *testing.T) {
+	got := pow(3, 0)
+	want := 1
+	if got != want {
+		t.Errorf("error: 1")
+	}
+}
