@@ -13,7 +13,7 @@ func TestAbs0(t *testing.T) {
 	}
 }
 
-// 32bit環境で動かないかも
+// 32bit環境ではエラー
 func TestAbs1(t *testing.T) {
 	got := abs(math.MaxInt64)
 	want := math.MaxInt64
@@ -25,70 +25,6 @@ func TestAbs1(t *testing.T) {
 func TestAbs2(t *testing.T) {
 	got := abs(-100)
 	want := 100
-	if got != want {
-		t.Errorf("error: 2")
-	}
-}
-
-func TestLcm0(t *testing.T) {
-	got := lcm(4, 5)
-	want := 20
-	if got != want {
-		t.Errorf("error: 0")
-	}
-}
-
-func TestLcm1(t *testing.T) {
-	got := lcm(4, 2)
-	want := 4
-	if got != want {
-		t.Errorf("error: 1")
-	}
-}
-
-func TestPermutation0(t *testing.T) {
-	got := permutation(2, 3)
-	want := 0
-	if got != want {
-		t.Errorf("error: 0")
-	}
-}
-
-func TestPermutation1(t *testing.T) {
-	got := permutation(3, 2)
-	want := 6
-	if got != want {
-		t.Errorf("error: 1")
-	}
-}
-
-func TestPermutation2(t *testing.T) {
-	got := permutation(3, 0)
-	want := 1
-	if got != want {
-		t.Errorf("error: 2")
-	}
-}
-
-func TestCombination0(t *testing.T) {
-	got := combination(2, 3)
-	want := 0
-	if got != want {
-		t.Errorf("error: 0")
-	}
-}
-
-func TestCombination1(t *testing.T) {
-	got := combination(3, 2)
-	want := 3
-	if got != want {
-		t.Errorf("error: 1")
-	}
-}
-
-func TestCombination2(t *testing.T) {
-	got := combination(3, 0)
-	want := 1
 	if got != want {
 		t.Errorf("error: 2")
 	}
@@ -148,23 +84,4 @@ func TestPow1(t *testing.T) {
 	if got != want {
 		t.Errorf("error: 1")
 	}
-}
-
-func TestDivisor0(t *testing.T) {
-	if !testEq(divisor(36), []int{1, 36, 2, 18, 3, 12, 4, 9, 6}) {
-		t.Errorf("error: 0")
-	}
-}
-
-func testEq(a, b []int) bool {
-
-	if len(a) != len(b) {
-		return false
-	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
