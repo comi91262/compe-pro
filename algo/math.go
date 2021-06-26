@@ -51,3 +51,36 @@ func pow(a, x int) int {
 	}
 	return r
 }
+
+func floorLog(x int) int {
+	if x == 1 {
+		return 0
+	}
+	r := 1
+	prod := 2
+	for x > prod {
+		prod *= 2
+		r++
+	}
+
+	return r
+}
+
+func ceilLog(x int) int {
+	if x == 1 {
+		return 0
+	}
+	r := 1
+	prod := 2
+	for x > prod {
+		prod *= 2
+		r++
+	}
+
+	if x < prod {
+		return r - 1
+	} else {
+		return r
+	}
+
+}

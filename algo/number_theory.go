@@ -64,10 +64,28 @@ func getSpf(n int) []int {
 }
 
 func primeFactor(n int, spf []int) map[int]int {
-	var m map[int]int
+	var m = map[int]int{}
 	for n != 1 {
 		m[spf[n]]++
 		n /= spf[n]
+	}
+	return m
+}
+
+func primeFactor2(n int) map[int]int {
+	var m = map[int]int{}
+
+	for i := 2; i*i <= n; i++ {
+		if n%i != 0 {
+			continue
+		}
+		for n%i == 0 {
+			m[i]++
+			n /= i
+		}
+	}
+	if n != 1 {
+		m[n]++
 	}
 	return m
 }

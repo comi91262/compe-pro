@@ -85,3 +85,67 @@ func TestPow1(t *testing.T) {
 		t.Errorf("error: 1")
 	}
 }
+
+func TestFloorLog0(t *testing.T) {
+	got := floorLog(1)
+	want := 0
+	if got != want {
+		t.Errorf("error: 0")
+	}
+}
+
+func TestFloorLog1(t *testing.T) {
+	got := floorLog(2)
+	want := 1
+	if got != want {
+		t.Errorf("error: 1")
+	}
+}
+
+func TestFloorLog2(t *testing.T) {
+	got := floorLog(3)
+	want := 2
+	if got != want {
+		t.Errorf("error: 2")
+	}
+}
+
+func TestFloorLog3(t *testing.T) {
+	got := floorLog(4)
+	want := 2
+	if got != want {
+		t.Errorf("error: 3")
+	}
+}
+
+func TestCeilLog0(t *testing.T) {
+	got := ceilLog(1)
+	want := 0
+	if got != want {
+		t.Errorf("error: 0")
+	}
+}
+
+func TestCeilLog1(t *testing.T) {
+	got := ceilLog(2)
+	want := 1
+	if got != want {
+		t.Errorf("error: 1")
+	}
+}
+
+func TestCeilLog2(t *testing.T) {
+	got := ceilLog(3)
+	want := 1
+	if got != want {
+		t.Errorf("error: 2")
+	}
+}
+
+func TestCeilLog3(t *testing.T) {
+	got := ceilLog(4)
+	want := 2
+	if got != want {
+		t.Errorf("error: 3 %v", got)
+	}
+}
