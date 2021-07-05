@@ -23,7 +23,7 @@ func binarySearch(a []int, boader int, criteria func(value, boader int) bool) in
 	for abs(ok-ng) > 1 {
 		mid := (ok + ng) / 2
 
-		if criteria(mid, boader) {
+		if criteria(a[mid], boader) {
 			ok = mid
 		} else {
 			ng = mid
