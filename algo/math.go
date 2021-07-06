@@ -40,6 +40,18 @@ func mod(x, y int) int {
 	return x + y
 }
 
+func powMod(a, x, d int) int {
+	var r int = 1
+	for x > 0 {
+		if x&1 == 1 {
+			r = r * a % d
+		}
+		a = a * a % d
+		x >>= 1
+	}
+	return r
+}
+
 func pow(a, x int) int {
 	r := 1
 	for x > 0 {

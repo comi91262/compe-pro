@@ -6,7 +6,7 @@ func dfsTree(n, pre int, g *[][]int) {
 			continue
 		}
 
-		dfs(next, n, g)
+		dfsTree(next, n, g)
 	}
 }
 
@@ -32,7 +32,7 @@ func dfs2d(sx, sy, x, y int, used [][]bool) {
 		if (nx != sx || ny != sy) && used[nx][ny] {
 			continue
 		}
-		dfs(sx, sy, nx, ny, used)
+		dfs2d(sx, sy, nx, ny, used)
 	}
 	used[x][y] = false
 }
