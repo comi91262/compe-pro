@@ -1,3 +1,3 @@
-module a
+module github.com/ykonomi/compe-pro
 
-go 1.14
+go 1.15
