@@ -1,24 +1,35 @@
 package algo
 
-func cumulativeSum2(a [][]int) [][]int {
-	m := len(a) + 1
+type cumulativeSum2 [][]int
 
-	r := make([][]int, m)
-	for i := 0; i < m; i++ {
-		r[i] = make([]int, m)
+func (c *cumulativeSum2) create(n, m int) {
+	*c = make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		(*c)[i] = make([]int, m+1)
 	}
+}
 
-	for i := 1; i < m; i++ {
+func (c cumulativeSum2) add(x, y, v int) {
+	c[x+1][y+1] += v
+}
+
+func (c cumulativeSum2) build() {
+	n := len(c)
+	m := len(c[0])
+
+	for i := 1; i < n; i++ {
 		for j := 1; j < m; j++ {
-			r[i][j] = r[i][j-1] + a[i-1][j-1]
+			c[i][j] += c[i][j-1]
 		}
 	}
 
 	for i := 1; i < m; i++ {
-		for j := 1; j < m; j++ {
-			r[i][j] += r[i-1][j]
+		for j := 1; j < n; j++ {
+			c[j][i] += c[j-1][i]
 		}
 	}
+}
 
-	return r
+func (c cumulativeSum2) get(sx, sy, tx, ty int) int {
+	return c[tx][ty] - c[tx][sy-1] - c[sx-1][ty] + c[sx-1][sy-1]
 }

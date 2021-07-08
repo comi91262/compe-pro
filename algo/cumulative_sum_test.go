@@ -1,24 +1,32 @@
 package algo
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestCumulativeSum0(t *testing.T) {
 
+	c := cumulativeSum2{}
+
+	c.create(3, 2)
+
 	var a = [][]int{
-		[]int{2, 4, 6},
-		[]int{4, 6, 2},
-		[]int{1, 9, 1},
+		{2, 4},
+		{4, 6},
+		{1, 9},
+	}
+	for i := 0; i < 3; i++ {
+		for j := 0; j < 2; j++ {
+			c.add(i, j, a[i][j])
+		}
 	}
 
-	got := cumulativeSum2(a)
-	want := [][]int{
-		[]int{0, 0, 0, 0},
-		[]int{0, 2, 6, 12},
-		[]int{0, 6, 16, 24},
-		[]int{0, 7, 26, 35},
-	}
+	c.build()
 
-	if !testSlice2Eq(got, want) {
+	got := c.get(1, 1, 3, 2)
+	want := 26
+
+	if got != want {
 		t.Errorf("Error 0: %v", got)
 	}
 }
