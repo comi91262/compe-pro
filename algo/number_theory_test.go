@@ -69,7 +69,7 @@ func TestCombination2(t *testing.T) {
 }
 
 func TestDivisor0(t *testing.T) {
-	if !testEq(divisor(36), []int{1, 36, 2, 18, 3, 12, 4, 9, 6}) {
+	if !testSliceEq(divisor(36), []int{1, 36, 2, 18, 3, 12, 4, 9, 6}) {
 		t.Errorf("error: 0")
 	}
 }

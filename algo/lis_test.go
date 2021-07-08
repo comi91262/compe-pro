@@ -7,7 +7,7 @@ func TestLIS0(t *testing.T) {
 	got := lis(a)
 	want := []int{1, 1, 2, 1, 3, 4, 2, 4}
 
-	if !testEq(got, want) {
+	if !testSliceEq(got, want) {
 		t.Errorf("Error 0: %v", got)
 	}
 }
