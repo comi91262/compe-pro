@@ -1,0 +1,33 @@
+snippet abs
+func abs(x int) int {
+	if x >= 0 {
+		return x
+	} else {
+		return x * -1
+	}
+}
+endsnippet
+
+snippet min
+func min(arg ...int) int {
+	min := arg[0]
+	for _, x := range arg {
+		if min > x {
+			min = x
+		}
+	}
+	return min
+}
+endsnippet
+
+snippet max
+func max(arg ...int) int {
+	max := arg[0]
+	for _, x := range arg {
+		if max < x {
+			max = x
+		}
+	}
+	return max
+}
+endsnippet
