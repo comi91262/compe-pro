@@ -13,3 +13,17 @@ func unique(a []int) []int {
 
 	return r
 }
+
+func enumarate(size, init, inc int) []int {
+	a := make([]int, size)
+	if size == 0 {
+		return a
+	}
+
+	a[0] = init
+	for i := 1; i < size; i++ {
+		a[i] = a[i-1] + inc
+	}
+
+	return a
+}
