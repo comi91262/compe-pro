@@ -1,5 +1,13 @@
 package algo
 
+import "math"
+
+func isSquare(n int) bool {
+	pre := int(math.Sqrt(float64(n)))
+
+	return n == pre*pre
+}
+
 func abs(x int) int {
 	if x >= 0 {
 		return x

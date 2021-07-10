@@ -32,10 +32,28 @@ func binarySearch(a []int, boader int, criteria func(value, boader int) bool) in
 	return ok
 }
 
-func bitFullSearch(n int) {
+func bit2FullSearch(n int) {
 	for i := 0; i < 1<<n; i++ {
 		for j := 0; j < n; j++ {
 			if i&(1<<j) != 0 {
+			}
+		}
+	}
+}
+
+func bitfullSearch(base int, n int) {
+	power := make([]int, n+1)
+	power[0] = 1
+	for i := 0; i < n; i++ {
+		power[i+1] = power[i] * base
+	}
+
+	for i := 0; i < power[n]; i++ {
+		for j := 0; j < n; j++ {
+			bit := i / power[j] % base
+			switch bit {
+			case 0:
+				// ...
 			}
 		}
 	}

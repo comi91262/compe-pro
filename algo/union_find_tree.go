@@ -4,10 +4,10 @@ var parent []int
 var rank []int
 
 func initUnionFind(n int) {
-	parent = make([]int, n)
-	rank = make([]int, n)
+	parent = make([]int, n+1)
+	rank = make([]int, n+1)
 
-	for i := 0; i < n; i++ {
+	for i := 0; i < n+1; i++ {
 		parent[i] = i
 		rank[i] = 0
 	}
