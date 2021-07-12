@@ -58,3 +58,23 @@ func bitfullSearch(base int, n int) {
 		}
 	}
 }
+
+func ternarySearch(n int, a []int) int {
+	ans, cl, cr := 0, 1, n
+
+	for i := 0; i < n; i++ {
+		c1 := (cl + cl + cr) / 3
+		c2 := (cl + cr + cr) / 3
+
+		d1 := a[c1]
+		d2 := a[c2]
+
+		ans = max(ans, d1, d2)
+		if d1 < d2 {
+			cl = c1
+		} else {
+			cr = c2
+		}
+	}
+	return ans
+}

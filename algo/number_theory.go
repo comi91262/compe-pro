@@ -90,38 +90,52 @@ func primeFactor2(n int) map[int]int {
 	return m
 }
 
-// k <= n <= 10_000_000
-func initFactTb(n, p int) ([]int, []int, []int) {
+// nCk (mod p) の計算の高速化 (k <= n <= 10_000_000)
+// nCk = n! / k! / (n-k)! (mod p)
+//     = n! * (k!)^(-1) * ((n-k)!)^(-1) (mod p)
+//     = fact[n] * factInv[k] * factInv[n-k] (mod p)
+//
+// fact[i] = i * fact[i-1] (mod p)
+// factInv[i] = i!^(-1) = inv[i] * fact_inv[i-1] (mod p, inv[i] = (i)^(-1))
+func initFactTb(n, p int) ([]int, []int) {
 	fact := make([]int, n+1)
 	factInv := make([]int, n+1)
+
+	fact[0], fact[1], factInv[0], factInv[1] = 1, 1, 1, 1
+
 	inv := make([]int, n+1)
-	fact[1] = 1
-	factInv[1] = 1
 	inv[1] = 1
 	for i := 2; i < n+1; i++ {
 		fact[i] = fact[i-1] * i % p
 		inv[i] = p - inv[p%i]*(p/i)%p
 		factInv[i] = factInv[i-1] * inv[i] % p
 	}
-	return fact, factInv, inv
+	return fact, factInv
 }
 
-func combinationMod(n, k, p int, fact, factInv, inv []int) int {
+func combinationMod(n, k, p int, fact, factInv []int) int {
+	if n < k {
+		return 0
+	}
+	if k == 0 {
+		return 1
+	}
+
 	return fact[n] * (factInv[k] * factInv[n-k] % p) % p
 }
 
 // k <= 10_000_000 <=  n <= 1_000_000_000
 func initFactTb2(n, p int) []int {
 	factInv := make([]int, n+1)
-	inv := make([]int, n+1)
 
-	factInv[1] = 1
+	factInv[0], factInv[1] = 1, 1
+
+	inv := make([]int, n+1)
 	inv[1] = 1
 	for i := 2; i < n; i++ {
 		inv[i] = p - inv[p%i]*(p/i)%p
 		factInv[i] = factInv[i-1] * inv[i] % p
 	}
-
 	return factInv
 }
 
