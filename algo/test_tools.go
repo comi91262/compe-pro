@@ -2,7 +2,7 @@ package algo
 
 import "errors"
 
-func testSliceEq(a, b []int) bool {
+func testEqSlice(a, b []int) bool {
 
 	if len(a) != len(b) {
 		return false
@@ -15,7 +15,7 @@ func testSliceEq(a, b []int) bool {
 	return true
 }
 
-func testSlice2Eq(a, b [][]int) bool {
+func testEqSlice2(a, b [][]int) bool {
 
 	n := len(a)
 	m := len(b)
@@ -28,7 +28,7 @@ func testSlice2Eq(a, b [][]int) bool {
 			if i != j {
 				continue
 			}
-			if !testSliceEq(a[i], b[i]) {
+			if !testEqSlice(a[i], b[i]) {
 				return false
 			}
 		}

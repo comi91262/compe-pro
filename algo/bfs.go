@@ -1,5 +1,41 @@
 package algo
 
+// ただ BFSするだけ
+func bfs(start int, g [][]int) {
+	q := queue{}
+	q.push(start)
+
+	for !q.empty() {
+		node := q.pop()
+		for _, e := range g[node] {
+			q.push(e)
+		}
+	}
+}
+
+// 単一コストの最短経路問題を BFS でとく
+func bfsMinDist(start int, g [][]int) {
+	const inf = -(1 << 60)
+	q := queue{}
+	q.push(start)
+
+	dist := make([]int, len(g)+1)
+
+	for i := 0; i <= len(g); i++ {
+		dist[i] = inf
+	}
+	dist[start] = 0
+	for !q.empty() {
+		node := q.pop()
+		for _, e := range g[node] {
+			if dist[e] == inf {
+				dist[e] = dist[node] + 1
+				q.push(e)
+			}
+		}
+	}
+}
+
 func bfs2(h, w int, sx, sy, ex, ey int, s [][]string) {
 	const inf = 1 << 60
 	var dx = [4]int{1, 0, -1, 0}

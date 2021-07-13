@@ -7,7 +7,7 @@ func TestCompression0(t *testing.T) {
 	got := compression(a)
 	want := []int{0, 3, 1, 4, 5, 2, 3}
 
-	if !testSliceEq(got, want) {
+	if !testEqSlice(got, want) {
 		t.Errorf("Error 0: %v", got)
 	}
 }

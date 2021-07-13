@@ -23,7 +23,7 @@ func prodMatrix(a, b [][]int) [][]int {
 	for i := 0; i < aRowN; i++ {
 		for k := 0; k < bRowN; k++ {
 			for j := 0; j < bColN; j++ {
-				c[i][j] += c[i][j] + a[i][k]*b[k][j]
+				c[i][j] += a[i][k] * b[k][j]
 			}
 		}
 	}

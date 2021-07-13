@@ -1,6 +1,8 @@
 package algo
 
-import "testing"
+import (
+	"testing"
+)
 
 func TestTopoSort(t *testing.T) {
 
@@ -24,21 +26,9 @@ func TestTopoSort(t *testing.T) {
 	}
 	got := topoSort(g)
 
-	want := []int{}
-	if !testEq2(got, want) {
-		t.Errorf("error: 0 %v %v", got, want)
-	}
-}
+	want := []int{0, 2, 1, 4, 3, 5}
 
-func testEq2(a, b []int) bool {
-
-	if len(a) != len(b) {
-		return false
+	if !testEqSlice(got, want) {
+		t.Errorf("error: %v %v", got, want)
 	}
-	for i := range a {
-		if a[i] != b[i] {
-			return false
-		}
-	}
-	return true
 }
