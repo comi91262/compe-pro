@@ -18,7 +18,7 @@ func treeDp(n, pre int) {
 }
 
 // 部分和DP
-func boo() {
+func subSumDp() {
 	var dp [101][100001]bool
 	var n, sum int
 	var t []int
@@ -63,4 +63,33 @@ func intervalDp(n int, a []int) {
 			}
 		}
 	}
+}
+
+func bitDp(n, k int) {
+	cost := make([]int, 1<<n)
+	for i := 1; i < 1<<n; i++ {
+		for j := 0; j < n; j++ {
+			for l := 0; l < j; l++ {
+				if ((i>>j)&1) == 1 && ((i>>l)&1) == 1 {
+				}
+			}
+		}
+	}
+
+	dp := make([][]int, k+1)
+	for i := 0; i < k+1; i++ {
+		dp[i] = make([]int, 1<<n)
+		for j := 0; j < 1<<n; j++ {
+			dp[i][j] = 1 << 62
+		}
+	}
+	dp[0][0] = 0
+	for i := 1; i <= k; i++ {
+		for bit := 1; bit < 1<<n; bit++ {
+			for b := bit; b != 0; b = (b - 1) & bit {
+				dp[i][bit] = min(dp[i][bit], max(dp[i-1][bit-b], cost[b]))
+			}
+		}
+	}
+
 }
