@@ -1,16 +1,7 @@
 package algo
 
-func swap(a []int, i, j int) {
-	a[i], a[j] = a[j], a[i]
-}
-
-func reverse(a []int, i, j int) {
-	for k := 0; k < (j-i+1)/2; k++ {
-		swap(a, i+k, j-k)
-	}
-}
-
 // Narayana Pandita’s algorithm
+// swap, reverse (slice.go) が必要
 func nextPermutation(a []int) {
 	var lastIndex = len(a) - 1
 

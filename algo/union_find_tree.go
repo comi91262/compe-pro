@@ -1,45 +1,48 @@
 package algo
 
-var parent []int
-var rank []int
+// Library Checker 検証済
+type UnionFind struct {
+	parent []int
+	rank   []int
+}
 
-func initUnionFind(n int) {
-	parent = make([]int, n+1)
-	rank = make([]int, n+1)
+func (uf *UnionFind) Create(n int) {
+	uf.parent = make([]int, n+1)
+	uf.rank = make([]int, n+1)
 
 	for i := 0; i < n+1; i++ {
-		parent[i] = i
-		rank[i] = 0
+		uf.parent[i] = i
+		uf.rank[i] = 0
 	}
 }
 
-func root(x int) int {
-	if parent[x] == x {
+func (uf *UnionFind) root(x int) int {
+	if uf.parent[x] == x {
 		return x
 	} else {
-		parent[x] = root(parent[x])
-		return parent[x]
+		uf.parent[x] = uf.root(uf.parent[x])
+		return uf.parent[x]
 	}
 }
 
-func same(x, y int) bool {
-	return root(x) == root(y)
+func (uf *UnionFind) IsSameRoot(x, y int) bool {
+	return uf.root(x) == uf.root(y)
 }
 
-func unite(cx, cy int) {
-	x := root(cx)
-	y := root(cy)
+func (uf *UnionFind) UniteTree(cx, cy int) {
+	x := uf.root(cx)
+	y := uf.root(cy)
 
 	if x == y {
 		return
 	}
 
-	if rank[x] < rank[y] {
-		parent[x] = y
-	} else if rank[x] > rank[y] {
-		parent[y] = x
+	if uf.rank[x] < uf.rank[y] {
+		uf.parent[x] = y
+	} else if uf.rank[x] > uf.rank[y] {
+		uf.parent[y] = x
 	} else {
-		parent[y] = x
-		rank[x]++
+		uf.parent[y] = x
+		uf.rank[x]++
 	}
 }

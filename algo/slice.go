@@ -2,6 +2,17 @@ package algo
 
 import "sort"
 
+func swap(a []int, i, j int) {
+	a[i], a[j] = a[j], a[i]
+}
+
+// スライス a の i番目からj番目を反転させる関数
+func reverse(a []int, i, j int) {
+	for k := 0; k < (j-i+1)/2; k++ {
+		swap(a, i+k, j-k)
+	}
+}
+
 func unique(a []int) []int {
 	r := make([]int, 0)
 	m := make(map[int]bool, 0)
