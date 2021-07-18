@@ -56,3 +56,17 @@ func toNumber(a []int, base int) int {
 	}
 	return ans
 }
+
+// 2進数でxを表し, 各桁の数をスライスで返す
+// size の分0詰めする
+func toBinaryDigits(x, size int) []int {
+	r := make([]int, size)
+	for i := 0; i < size; i++ {
+		if x == 0 {
+			break
+		}
+		r[size-1-i] = x % 2
+		x /= 2
+	}
+	return r
+}

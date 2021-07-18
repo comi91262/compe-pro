@@ -43,3 +43,12 @@ func TestToNumber(t *testing.T) {
 		t.Errorf("error: got %v", got)
 	}
 }
+
+func TestTo2BasedDisits(t *testing.T) {
+	if got := toBinaryDigits(10, 8); !testEqSlice(got, []int{0, 0, 0, 0, 1, 0, 1, 0}) {
+		t.Errorf("error: got %v", got)
+	}
+	if got := toBinaryDigits(0, 2); !testEqSlice(got, []int{0, 0}) {
+		t.Errorf("error: got %v", got)
+	}
+}
