@@ -16,6 +16,9 @@ func dijkstra(start int, dist []int, g [][]edge, queue PriorityQueue) []int {
 
 	for queue.Len() > 0 {
 		v := heap.Pop(&queue).(*Item)
+		if dist[v.value] < v.priority {
+			continue
+		}
 		for _, e := range g[v.value] {
 			if dist[e.to] > dist[v.value]+e.cost {
 				dist[e.to] = dist[v.value] + e.cost

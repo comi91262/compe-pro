@@ -27,6 +27,15 @@ func unique(a []int) []int {
 	return r
 }
 
+func contains(x int, a []int) bool {
+	for _, e := range a {
+		if x == e {
+			return true
+		}
+	}
+	return false
+}
+
 func enumarate(size, init, inc int) []int {
 	a := make([]int, size)
 	if size == 0 {
