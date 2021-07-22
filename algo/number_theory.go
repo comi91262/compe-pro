@@ -97,23 +97,32 @@ func primeFactor2(n int) map[int]int {
 //
 // fact[i] = i * fact[i-1] (mod p)
 // factInv[i] = i!^(-1) = inv[i] * fact_inv[i-1] (mod p, inv[i] = (i)^(-1))
-func initFactTb(n, p int) ([]int, []int) {
-	fact := make([]int, n+1)
-	factInv := make([]int, n+1)
+// 前処理　O(n)
+// クエリ  O(1)
+type FastNck struct {
+	fact    []int
+	factInv []int
+	prime   int
+}
 
-	fact[0], fact[1], factInv[0], factInv[1] = 1, 1, 1, 1
+func (table *FastNck) Create(n, p int) {
+	table.fact = make([]int, n+1)
+	table.factInv = make([]int, n+1)
+	table.prime = p
+
+	table.fact[0], table.fact[1] = 1, 1
+	table.factInv[0], table.factInv[1] = 1, 1
 
 	inv := make([]int, n+1)
 	inv[1] = 1
 	for i := 2; i < n+1; i++ {
-		fact[i] = fact[i-1] * i % p
+		table.fact[i] = table.fact[i-1] * i % p
 		inv[i] = p - inv[p%i]*(p/i)%p
-		factInv[i] = factInv[i-1] * inv[i] % p
+		table.factInv[i] = table.factInv[i-1] * inv[i] % p
 	}
-	return fact, factInv
 }
 
-func combinationMod(n, k, p int, fact, factInv []int) int {
+func (table *FastNck) Combination(n, k int) int {
 	if n < k {
 		return 0
 	}
@@ -121,7 +130,7 @@ func combinationMod(n, k, p int, fact, factInv []int) int {
 		return 1
 	}
 
-	return fact[n] * (factInv[k] * factInv[n-k] % p) % p
+	return table.fact[n] * (table.factInv[k] * table.factInv[n-k] % table.prime) % table.prime
 }
 
 // k <= 10_000_000 <=  n <= 1_000_000_000
