@@ -31,5 +31,5 @@ func (c cumulativeSum2) build() {
 }
 
 func (c cumulativeSum2) get(sx, sy, tx, ty int) int {
-	return c[tx][ty] - c[tx][sy-1] - c[sx-1][ty] + c[sx-1][sy-1]
+	return c[tx][ty] - c[tx][sy] - c[sx][ty] + c[sx][sy]
 }

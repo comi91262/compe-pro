@@ -23,7 +23,7 @@ func TestCumulativeSum0(t *testing.T) {
 
 	c.build()
 
-	got := c.get(1, 1, 3, 2)
+	got := c.get(0, 0, 3, 2)
 	want := 26
 
 	if got != want {
