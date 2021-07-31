@@ -152,7 +152,6 @@ abc085_a
 abc095_a
 abc088_a
 abc064_a
-arc065_a
 abc085_c
 abc085_b
 abc088_b
