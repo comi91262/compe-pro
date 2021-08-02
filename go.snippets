@@ -80,6 +80,22 @@ snippet o
 fmt.Fprintf(writer, "%v\n", $1)
 endsnippet
 
+snippet os
+func printer(a [][]int, limit int) {
+	for i := 0; i < len(a); i++ {
+		for j := 0; j < len(a[0]); j++ {
+			if a[i][j] >= limit {
+				fmt.Fprintf(writer, "%5v ", "x")
+				continue
+			}
+			fmt.Fprintf(writer, "%5v ", a[i][j])
+		}
+		fmt.Fprintf(writer, "\n")
+	}
+}
+endsnippet
+
+
 snippet if
 if $1 {
 
