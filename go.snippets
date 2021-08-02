@@ -1,3 +1,128 @@
+snippet c
+package main
+
+import (
+	"bufio"
+	"os"
+)
+
+var reader = bufio.NewReader(os.Stdin)
+var writer = bufio.NewWriter(os.Stdout)
+
+func main() {
+	defer writer.Flush()
+
+}
+endsnippet
+
+snippet "va?r?" "" rb
+var $1 int; fmt.Fscan(reader, &$1)
+endsnippet
+
+snippet "vst|vast|varst" "" rb
+var $1 string; fmt.Fscan(reader, &$1)
+endsnippet
+
+snippet "vf|vaf|varf" "" rb
+var $1 float64; fmt.Fscan(reader, &$1)
+endsnippet
+
+snippet "vsli|vasli|varsli" "" rb
+var $1 = make([]int, $2) 
+endsnippet
+
+snippet "vs2" "" rb
+var $1 = make([][]int, $2)
+for i := 0; i < $2; i++ {
+	$1[i] = make([]int, $3)
+}
+endsnippet
+
+snippet i
+fmt.Fscan(reader, &$1)
+endsnippet
+
+snippet is
+var $1 = make([]int, $2)
+for i := 0; i < $2; i++ {
+	fmt.Fscan(reader, &$1[i])
+}
+endsnippet
+
+snippet is2
+$1 := make([][]int, $2)
+for i := 0; i < $2; i++ {
+	$1[i] = make([]int, $3)
+	for j := 0; j < $3; j++ {
+		fmt.Fscan(reader, &$1[i][j])
+	}
+}
+endsnippet
+
+snippet ist
+var tmp string; fmt.Fscan(reader, &tmp)
+var $1 = strings.Split(tmp, "")
+endsnippet
+
+snippet ig
+var g = make([][]int, $1)
+var $2 = make([]int, $4)
+var $3 = make([]int, $4)
+for i := 1; i < $4; i++ {
+	fmt.Fscan(reader, &$2[i], &$3[i])
+	g[$2[i]] = append(g[$2[i]], $3[i])
+	g[$3[i]] = append(g[$3[i]], $2[i])
+}
+endsnippet
+
+
+snippet o
+fmt.Fprintf(writer, "%v\n", $1)
+endsnippet
+
+snippet if
+if $1 {
+
+}
+endsnippet
+
+snippet el
+else {
+
+}
+endsnippet
+
+snippet for
+for $1 := 0; $1 < $2; $1++ {
+
+}
+endsnippet
+
+snippet sort
+sort.Slice($1, func(i, j int) bool { return $1[i] < $1[j] })
+endsnippet
+
+
+snippet dp
+dp := make([][]int, n)
+for i := 0; i < n; i++ {
+	dp[i] = make([]int, w)
+		for j := 0; j < w; j++ {
+			dp[i][j] = inf
+		}
+}
+endsnippet
+
+
+snippet cm
+const mod = 1_000_000_000 + 7
+endsnippet
+
+snippet cf10
+const f10 = 3628800
+endsnippet
+
+
 snippet abs
 func abs(x int) int {
 	if x >= 0 {
@@ -32,82 +157,44 @@ func max(arg ...int) int {
 }
 endsnippet
 
-snippet is
-a := make([]int, n)
-endsnippet
-
-snippet iis
-var a = make([]int, n)
-for i := 0; i < n; i++ {
-	fmt.Fscan(reader, &a[i])
-}
-endsnippet
-
-snippet is2
-a := make([][]int, n)
-for i := 0; i < n; i++ {
-	a[i] = make([]int, n)
-}
-endsnippet
-
-snippet iis2
-a := make([][]int, n)
-for i := 0; i < n; i++ {
-	a[i] = make([]int, n)
-	for j := 0; j < n; j++ {
-		fmt.Fscan(reader, &a[i][j])
-	}
-}
-endsnippet
-
-snippet iiv
-var n int
-fmt.Fscan(reader, &n)
-endsnippet
-
-snippet iiv2
-var n, q int
-fmt.Fscan(reader, &n, &q)
-endsnippet
-
-snippet iis
-var tmp string
-fmt.Fscan(reader, &tmp)
-s := strings.Split(tmp, "")
-endsnippet
-
-snippet o
-fmt.Fprintf(writer, "%v\n", n)
-endsnippet
-
-snippet iig
-var g = make([][]int, n+1)
-var a = make([]int, m+1)
-var b = make([]int, m+1)
-for i := 1; i < m+1; i++ {
-	fmt.Fscan(reader, &a[i], &b[i])
-	g[a[i]] = append(g[a[i]], b[i])
-	g[b[i]] = append(g[b[i]], a[i])
-}
-endsnippet
-
-snippet for
-for i := 0; i < n; i++ {
-}
-endsnippet
-
-snippet for2
-for i := 0; i < n; i++ {
-	for j := 0; j < n; j++ {
-	}
-}
-endsnippet
-
-snippet for3
-for i := 0; i < n; i++ {
-	for j := 0; j < n; j++ {
-		for l := 0; l < n; l++ {
+snippet pow
+func pow(a, x int) int {
+	r := 1
+	for x > 0 {
+		if x&1 == 1 {
+			r *= a
 		}
+		a *= a
+		x >>= 1
 	}
+	return r
 }
 endsnippet
+
+snippet gcd
+func gcd(a, b int) int {
+	if b == 0 {
+		return a
+	}
+	return gcd(b, a%b)
+}
+endsnippet
+
+snippet q
+type queue []$1
+
+func (q *queue) push(n $1) {
+	*q = append(*q, n)
+}
+
+func (q *queue) pop() $1 {
+	v := (*q)[0]
+	(*q) = (*q)[1:]
+	return v
+}
+
+func (q *queue) empty() bool {
+	return len(*q) == 0
+}
+endsnippet
+

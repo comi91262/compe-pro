@@ -38,6 +38,26 @@ func toDigits(x, base int) []int {
 		x = x / base
 	}
 
+	return r
+}
+
+// base進数で xを桁ごとに分解する 負の進数にも対応
+func toMathDigits(x, base int) []int {
+	if x == 0 {
+		return []int{0}
+	}
+
+	r := make([]int, 0)
+
+	for x != 0 {
+		r = append(r, mod(x, base))
+		if x < 0 {
+			x = (x - 1) / base
+		} else {
+			x = x / base
+		}
+	}
+
 	reverse(r, 0, len(r)-1)
 
 	return r
