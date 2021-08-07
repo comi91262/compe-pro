@@ -23,13 +23,13 @@ func dfsColor(n, pre int, color []int, g [][]int) {
 }
 
 // 二次元配列をDFSする バックトラック付き
-func dfs2d(sx, sy, x, y int, used [][]bool) {
-	var dx = [4]int{0, 1, 0, -1}
-	var dy = [4]int{1, 0, -1, 0}
-
-	if x == sx && y == sy && used[x][y] {
+func dfs2d(x, y int, s [][]string, used [][]bool) {
+	if used[x][y] {
 		return
 	}
+
+	var dx = [4]int{0, 1, 0, -1}
+	var dy = [4]int{1, 0, -1, 0}
 
 	h := len(used)
 	w := len(used[0])
@@ -42,10 +42,7 @@ func dfs2d(sx, sy, x, y int, used [][]bool) {
 		if nx < 0 || ny < 0 || nx >= h || ny >= w {
 			continue
 		}
-		if (nx != sx || ny != sy) && used[nx][ny] {
-			continue
-		}
-		dfs2d(sx, sy, nx, ny, used)
+		dfs2d(x, y, s, used)
 	}
 	used[x][y] = false
 }

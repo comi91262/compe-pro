@@ -133,3 +133,17 @@ func sweepBitMatrix(a [][]int) [][]int {
 
 	return c
 }
+
+// 上下反転
+func reverseMatrix(a [][]int) [][]int {
+	n := len(a)
+	m := len(a[0])
+
+	for i := 0; i < n/2; i++ {
+		for j := 0; j < m; j++ {
+			a[i][j], a[n-1-i][j] = a[n-1-i][j], a[i][j]
+		}
+	}
+
+	return a
+}

@@ -4,11 +4,13 @@ import (
 	"container/heap"
 )
 
-func dijkstra(start int, dist []int, g [][]edge, queue PriorityQueue) []int {
+func dijkstra(start int, g [][]edge) []int {
+	queue := PriorityQueue{}
 	heap.Init(&queue)
 	const inf = 1 << 60
 
-	for i := 0; i < len(dist); i++ {
+	dist := make([]int, len(g))
+	for i := 1; i < len(dist); i++ {
 		dist[i] = inf
 	}
 	dist[start] = 0

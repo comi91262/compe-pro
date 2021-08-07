@@ -9,14 +9,6 @@ func lowerBound(value, boader int) bool {
 }
 
 func binarySearch(a []int, boader int, criteria func(value, boader int) bool) int {
-	abs := func(x int) int {
-		if x >= 0 {
-			return x
-		} else {
-			return x * -1
-		}
-	}
-
 	ng := -1
 	ok := len(a)
 
