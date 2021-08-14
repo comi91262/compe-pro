@@ -1,18 +1,17 @@
 package algo
 
-// Library Checker 検証済
 type UnionFind struct {
 	parent []int
-	rank   []int
+	size   []int
 }
 
 func (uf *UnionFind) Create(n int) {
-	uf.parent = make([]int, n+1)
-	uf.rank = make([]int, n+1)
+	uf.parent = make([]int, n)
+	uf.size = make([]int, n)
 
-	for i := 0; i < n+1; i++ {
+	for i := 0; i < n; i++ {
 		uf.parent[i] = i
-		uf.rank[i] = 0
+		uf.size[i] = 1
 	}
 }
 
@@ -37,12 +36,15 @@ func (uf *UnionFind) UniteTree(cx, cy int) {
 		return
 	}
 
-	if uf.rank[x] < uf.rank[y] {
-		uf.parent[x] = y
-	} else if uf.rank[x] > uf.rank[y] {
+	if uf.size[x] > uf.size[y] {
 		uf.parent[y] = x
+		uf.size[x] += uf.size[y]
 	} else {
-		uf.parent[y] = x
-		uf.rank[x]++
+		uf.parent[x] = y
+		uf.size[y] += uf.size[x]
 	}
+}
+
+func (uf *UnionFind) Size(x int) int {
+	return uf.size[uf.root(x)]
 }
