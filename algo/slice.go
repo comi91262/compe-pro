@@ -2,6 +2,14 @@ package algo
 
 import "sort"
 
+func sum(a []int) int {
+	r := 0
+	for i := range a {
+		r += a[i]
+	}
+	return r
+}
+
 func swap(a []int, i, j int) {
 	a[i], a[j] = a[j], a[i]
 }
