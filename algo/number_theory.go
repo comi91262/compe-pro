@@ -25,8 +25,16 @@ func permutation(n int, k int) int {
 	return prod
 }
 
-func combination(n int, k int) int {
-	return permutation(n, k) / permutation(k, k)
+func combination(n, k int) int {
+	r := 1
+	for d := 1; d <= k; d++ {
+		r *= n
+		n--
+		r /= d
+
+	}
+
+	return r
 }
 
 // 約数列挙
