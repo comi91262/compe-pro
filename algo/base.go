@@ -24,6 +24,16 @@ func strToDigits(s string) []int {
 	return r
 }
 
+func digit(x int) int {
+	r := 0
+	for x > 0 {
+		r++
+		x /= 10
+	}
+
+	return r
+}
+
 // base進数で xを桁ごとに分解する (1から10進数まで)
 // 10(10) -> [1, 0]
 // 10(2)  -> [1, 0, 1, 0]

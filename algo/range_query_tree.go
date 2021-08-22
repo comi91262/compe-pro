@@ -26,6 +26,11 @@ func (r *RMQ) Update(i, x int) {
 	}
 }
 
+func (r *RMQ) Get(i int) int {
+	i += r.n - 1
+	return r.data[i]
+}
+
 // [a,b) での最小の要素を取得。O(log(n))
 func (r *RMQ) Query(a, b int) int { return r.querySub(a, b, 0, 0, r.n) }
 func (rmq *RMQ) querySub(a, b, k, l, r int) int {
