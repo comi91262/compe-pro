@@ -10,3 +10,15 @@ func intersect(a, b map[string]int) map[string]int {
 
 	return r
 }
+
+func union(a, b map[int]int) map[int]int {
+	r := map[int]int{}
+	for k, v := range a {
+		r[k] += v
+	}
+	for k, v := range b {
+		r[k] += v
+	}
+
+	return r
+}

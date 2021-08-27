@@ -35,6 +35,21 @@ func unique(a []int) []int {
 	return r
 }
 
+func eq(a, b []int) bool {
+
+	if len(a) != len(b) {
+		return false
+	}
+
+	for i := 0; i < len(a); i++ {
+		if a[i] != b[i] {
+			return false
+		}
+
+	}
+	return true
+}
+
 func contains(x int, a []int) bool {
 	for _, e := range a {
 		if x == e {

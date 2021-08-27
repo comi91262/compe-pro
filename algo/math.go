@@ -116,6 +116,24 @@ func lcm(a, b int) int {
 	return a / d * b
 }
 
+func fact(n int) int {
+	r := 1
+	for n > 0 {
+		r *= n
+		n--
+	}
+	return r
+}
+
+func factMod(n int, p int) int {
+	r := 1
+	for n > 0 {
+		r = r * n % p
+		n--
+	}
+	return r
+}
+
 func permutation(n int, k int) int {
 	if n < k {
 		return 0
@@ -136,6 +154,30 @@ func combination(n, k int) int {
 		n--
 		r /= d
 
+	}
+
+	return r
+}
+
+func makePrimes(n int) []int {
+	r := []int{}
+	prime := make([]int, n+1)
+	for i := 0; i < n+1; i++ {
+		prime[i] = 1
+	}
+
+	prime[0], prime[1] = 0, 0
+	for p := 2; p*p < n; p++ {
+		if prime[p] > 0 {
+			for x := 0; p*(x+2) <= n; x++ {
+				prime[p*(x+2)] = 0
+			}
+		}
+	}
+	for p := 2; p < n+1; p++ {
+		if prime[p] > 0 {
+			r = append(r, p)
+		}
 	}
 
 	return r
