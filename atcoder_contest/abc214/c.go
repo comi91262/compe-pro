@@ -65,3 +65,57 @@ func main() {
 	}
 
 }
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+var reader = bufio.NewReader(os.Stdin)
+var writer = bufio.NewWriter(os.Stdout)
+
+func min(arg ...int) int {
+	min := arg[0]
+	for _, x := range arg {
+		if min > x {
+			min = x
+		}
+	}
+	return min
+}
+
+func main() {
+	defer writer.Flush()
+
+	var n int
+	fmt.Fscan(reader, &n)
+
+	var s = make([]int, n)
+	var t = make([]int, n)
+	for i := 0; i < n; i++ {
+		fmt.Fscan(reader, &s[i])
+	}
+	for i := 0; i < n; i++ {
+		fmt.Fscan(reader, &t[i])
+	}
+
+	mn := 1 << 60
+	start := 0
+	for i := range t {
+		if mn > t[i] {
+			mn = t[i]
+			start = i
+		}
+	}
+
+	var a = make([]int, n)
+	for i := 0; i < n; i++ {
+		a[(start+i+n)%n] = min(a[(start+i-1+n)%n]+s[(start+i-1+n)%n], t[(start+i+n)%n])
+	}
+
+	for i := 0; i < n; i++ {
+		fmt.Fprintf(writer, "%v\n", a[i])
+	}
+}
