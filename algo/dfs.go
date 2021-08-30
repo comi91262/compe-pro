@@ -22,6 +22,22 @@ func dfsColor(n, pre int, color []int, g [][]int) {
 	}
 }
 
+// 重複した数列を作る
+func dfsD(n, m, d, k int, a []int, accum *[][]int) {
+	if n == d {
+		b := make([]int, len(a))
+		copy(b, a)
+		*accum = append(*accum, b)
+		return
+	}
+
+	for i := 0; k+i <= m; i++ {
+		a = append(a, k+i)
+		dfsD(n, m, d+1, k+i, a, accum)
+		a = a[:len(a)-1]
+	}
+}
+
 // 二次元配列をDFSする バックトラック付き
 func dfs2d(x, y int, s [][]string, used [][]bool) {
 	if used[x][y] {
