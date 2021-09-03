@@ -35,6 +35,19 @@ func unique(a []int) []int {
 	return r
 }
 
+// a, b がソート済
+func intersect(a, b []int) []int {
+	r := []int{}
+	idx := 0
+	for i := 0; i < len(a); i++ {
+		if idx < len(b) && a[i] == b[idx] {
+			r = append(r, a[i])
+			idx++
+		}
+	}
+	return r
+}
+
 func eq(a, b []int) bool {
 
 	if len(a) != len(b) {

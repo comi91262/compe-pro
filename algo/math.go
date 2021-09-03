@@ -153,7 +153,6 @@ func combination(n, k int) int {
 		r *= n
 		n--
 		r /= d
-
 	}
 
 	return r
