@@ -287,25 +287,30 @@ func (table *FastNck) Combination(n, k int) int {
 }
 
 // k <= 10_000_000 <=  n <= 1_000_000_000
-func initFactTb2(n, p int) []int {
-	factInv := make([]int, n+1)
-
-	factInv[0], factInv[1] = 1, 1
-
-	inv := make([]int, n+1)
-	inv[1] = 1
-	for i := 2; i < n; i++ {
-		inv[i] = p - inv[p%i]*(p/i)%p
-		factInv[i] = factInv[i-1] * inv[i] % p
-	}
-	return factInv
+type FastNck2 struct {
+	factInv []int
+	prime   int
 }
 
-func combinationMod2(n, k, p int, factInv []int) int {
-	ans := 1
-	for i := n; i >= n-k+1; i-- {
-		ans *= i
-		ans %= p
+func (table *FastNck2) Create(k, p int) {
+	table.factInv = make([]int, k+1)
+	table.prime = p
+	inv := make([]int, k+1)
+
+	table.factInv[0], table.factInv[1] = 1, 1
+	inv[1] = 1
+
+	for i := 2; i < k; i++ {
+		inv[i] = p - inv[p%i]*(p/i)%p
+		table.factInv[i] = table.factInv[i-1] * inv[i] % p
 	}
-	return ans * factInv[k] % p
+}
+
+func (table *FastNck2) Combination(n, k int) int {
+	r := 1
+	for i := n; i >= n-k+1; i-- {
+		r *= i
+		r %= table.prime
+	}
+	return r * table.factInv[k] % table.prime
 }
