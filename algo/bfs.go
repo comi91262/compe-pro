@@ -39,7 +39,7 @@ func bfsMinDist(start int, g [][]int) []int {
 }
 
 // 単一コストの最短経路問題を BFS でとく (二次元版)
-func bfs2MinDist(h, w, sx, sy int s [][]string) [][]int {
+func bfs2MinDist(h, w, sx, sy int, s [][]string) [][]int {
 	const inf = 1 << 60
 	var dx = [4]int{1, 0, -1, 0}
 	var dy = [4]int{0, 1, 0, -1}
@@ -62,13 +62,13 @@ func bfs2MinDist(h, w, sx, sy int s [][]string) [][]int {
 			tx := u.x + dx[i]
 			ty := u.y + dy[i]
 
-            if tx < 0 || tx >= h || ty < 0 || ty >= w  {
-                continue
-            }
-            if dist[tx][ty] != inf || s[tx][ty] == "#" {
-                continue
-            }
-			if  dist[u.x][u.y]+1 <= dist[tx][ty] {
+			if tx < 0 || tx >= h || ty < 0 || ty >= w {
+				continue
+			}
+			if dist[tx][ty] != inf || s[tx][ty] == "#" {
+				continue
+			}
+			if dist[u.x][u.y]+1 <= dist[tx][ty] {
 				dist[tx][ty] = dist[u.x][u.y] + 1
 				q.push(point{tx, ty})
 			}
