@@ -10,6 +10,41 @@ func getIdentityMatrix(n int) [][]int {
 	return c
 }
 
+// in-place  n * n
+func rotateMatrix(a [][]string) {
+	n := len(a)
+	for x := 0; x < n/2; x++ {
+		for y := x; y < n-x-1; y++ {
+			a[x][y], a[y][n-1-x], a[n-1-x][n-1-y], a[n-1-y][x] = a[y][n-1-x], a[n-1-x][n-1-y], a[n-1-y][x], a[x][y]
+		}
+	}
+}
+
+// 平行移動量を計算する
+func diffMatrix(s [][]string, t [][]string) (int, int) {
+	n := len(s)
+
+	sx, sy := 0, 0
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			if s[i][j] == "#" {
+				sx, sy = i, j
+			}
+		}
+
+	}
+	tx, ty := 0, 0
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			if t[i][j] == "#" {
+				tx, ty = i, j
+			}
+		}
+	}
+
+	return tx - sx, ty - sy
+}
+
 func prodMatrix(a, b [][]int) [][]int {
 	aRowN := len(a)
 	bColN := len(b[0])

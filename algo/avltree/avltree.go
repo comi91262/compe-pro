@@ -16,46 +16,97 @@ import (
 
 // Tree holds elements of the AVL tree.
 type Tree struct {
-	Root *Node // Root node
-	size int   // Total number of keys in the tree
+	Root       *Node      // Root node
+	Comparator Comparator // Key comparator
+	size       int        // Total number of keys in the tree
 }
 
 // Node is a single element within the tree
 type Node struct {
-	Key      int
-	Value    int
+	Key      interface{}
+	Value    interface{}
 	Parent   *Node    // Parent node
 	Children [2]*Node // Children nodes
 	b        int8
 }
 
+type Comparator func(a, b interface{}) int
+
+func IntComparator(a, b interface{}) int {
+	aAsserted := a.(int)
+	bAsserted := b.(int)
+	switch {
+	case aAsserted > bAsserted:
+		return 1
+	case aAsserted < bAsserted:
+		return -1
+	default:
+		return 0
+	}
+}
+
+// StringComparator provides a fast comparison on strings
+func StringComparator(a, b interface{}) int {
+	s1 := a.(string)
+	s2 := b.(string)
+	min := len(s2)
+	if len(s1) < len(s2) {
+		min = len(s1)
+	}
+	diff := 0
+	for i := 0; i < min && diff == 0; i++ {
+		diff = int(s1[i]) - int(s2[i])
+	}
+	if diff == 0 {
+		diff = len(s1) - len(s2)
+	}
+	if diff < 0 {
+		return -1
+	}
+	if diff > 0 {
+		return 1
+	}
+	return 0
+}
+
 // NewWith instantiates an AVL tree with the custom comparator.
-func New() *Tree {
-	return &Tree{}
+func NewWith(comparator Comparator) *Tree {
+	return &Tree{Comparator: comparator}
+}
+
+// NewWithIntComparator instantiates an AVL tree with the IntComparator, i.e. keys are of type int.
+func NewWithIntComparator() *Tree {
+	return &Tree{Comparator: IntComparator}
+}
+
+// NewWithStringComparator instantiates an AVL tree with the StringComparator, i.e. keys are of type string.
+func NewWithStringComparator() *Tree {
+	return &Tree{Comparator: StringComparator}
 }
 
 // Put inserts node into the tree.
 // Key should adhere to the comparator's type assertion, otherwise method panics.
-func (t *Tree) Put(key int, value int) {
+func (t *Tree) Put(key interface{}, value interface{}) {
 	t.put(key, value, nil, &t.Root)
 }
 
 // Get searches the node in the tree by key and returns its value or nil if key is not found in tree.
 // Second return parameter is true if key was found, otherwise false.
 // Key should adhere to the comparator's type assertion, otherwise method panics.
-func (t *Tree) Get(key int) (value int, found bool) {
+func (t *Tree) Get(key interface{}) (value interface{}, found bool) {
 	n := t.Root
 	for n != nil {
+		cmp := t.Comparator(key, n.Key)
 		switch {
-		case key == n.Key:
+		case cmp == 0:
 			return n.Value, true
-		case key < n.Key:
+		case cmp < 0:
 			n = n.Children[0]
-		case key > n.Key:
+		case cmp > 0:
 			n = n.Children[1]
 		}
 	}
-	return -1, false
+	return nil, false
 }
 
 // Remove remove the node from the tree by key.
@@ -75,8 +126,8 @@ func (t *Tree) Size() int {
 }
 
 // Keys returns all keys in-order
-func (t *Tree) Keys() []int {
-	keys := make([]int, t.size)
+func (t *Tree) Keys() []interface{} {
+	keys := make([]interface{}, t.size)
 	it := t.Iterator()
 	for i := 0; it.Next(); i++ {
 		keys[i] = it.Key()
@@ -85,8 +136,8 @@ func (t *Tree) Keys() []int {
 }
 
 // Values returns all values in-order based on the key.
-func (t *Tree) Values() []int {
-	values := make([]int, t.size)
+func (t *Tree) Values() []interface{} {
+	values := make([]interface{}, t.size)
 	it := t.Iterator()
 	for i := 0; it.Next(); i++ {
 		values[i] = it.Value()
@@ -114,16 +165,17 @@ func (t *Tree) Right() *Node {
 // all nodes in the tree is larger than the given node.
 //
 // Key should adhere to the comparator's type assertion, otherwise method panics.
-func (t *Tree) Floor(key int) (floor *Node, found bool) {
+func (t *Tree) Floor(key interface{}) (floor *Node, found bool) {
 	found = false
 	n := t.Root
 	for n != nil {
+		c := t.Comparator(key, n.Key)
 		switch {
-		case key == n.Key:
+		case c == 0:
 			return n, true
-		case key < n.Key:
+		case c < 0:
 			n = n.Children[0]
-		case key > n.Key:
+		case c > 0:
 			floor, found = n, true
 			n = n.Children[1]
 		}
@@ -142,17 +194,18 @@ func (t *Tree) Floor(key int) (floor *Node, found bool) {
 // all nodes in the tree is smaller than the given node.
 //
 // Key should adhere to the comparator's type assertion, otherwise method panics.
-func (t *Tree) Ceiling(key int) (floor *Node, found bool) {
+func (t *Tree) Ceiling(key interface{}) (floor *Node, found bool) {
 	found = false
 	n := t.Root
 	for n != nil {
+		c := t.Comparator(key, n.Key)
 		switch {
-		case key == n.Key:
+		case c == 0:
 			return n, true
-		case key < n.Key:
+		case c < 0:
 			floor, found = n, true
 			n = n.Children[0]
-		case key > n.Key:
+		case c > 0:
 			n = n.Children[1]
 		}
 	}
@@ -181,7 +234,7 @@ func (n *Node) String() string {
 	return fmt.Sprintf("%v", n.Key)
 }
 
-func (t *Tree) put(key int, value int, p *Node, qp **Node) bool {
+func (t *Tree) put(key interface{}, value interface{}, p *Node, qp **Node) bool {
 	q := *qp
 	if q == nil {
 		t.size++
@@ -189,14 +242,14 @@ func (t *Tree) put(key int, value int, p *Node, qp **Node) bool {
 		return true
 	}
 
-	if key == q.Key {
+	c := t.Comparator(key, q.Key)
+	if c == 0 {
 		q.Key = key
 		q.Value = value
 		return false
 	}
 
-	var c int
-	if key < q.Key {
+	if c < 0 {
 		c = -1
 	} else {
 		c = 1
@@ -210,13 +263,14 @@ func (t *Tree) put(key int, value int, p *Node, qp **Node) bool {
 	return false
 }
 
-func (t *Tree) remove(key int, qp **Node) bool {
+func (t *Tree) remove(key interface{}, qp **Node) bool {
 	q := *qp
 	if q == nil {
 		return false
 	}
 
-	if key == q.Key {
+	c := t.Comparator(key, q.Key)
+	if c == 0 {
 		t.size--
 		if q.Children[1] == nil {
 			if q.Children[0] != nil {
@@ -232,8 +286,7 @@ func (t *Tree) remove(key int, qp **Node) bool {
 		return false
 	}
 
-	var c int
-	if key < q.Key {
+	if c < 0 {
 		c = -1
 	} else {
 		c = 1
@@ -246,7 +299,7 @@ func (t *Tree) remove(key int, qp **Node) bool {
 	return false
 }
 
-func removeMin(qp **Node, minKey *int, minVal *int) bool {
+func removeMin(qp **Node, minKey *interface{}, minVal *interface{}) bool {
 	q := *qp
 	if q.Children[0] == nil {
 		*minKey = q.Key
@@ -489,18 +542,18 @@ func (iterator *Iterator) Prev() bool {
 
 // Value returns the current element's value.
 // Does not modify the state of the iterator.
-func (iterator *Iterator) Value() int {
+func (iterator *Iterator) Value() interface{} {
 	if iterator.node == nil {
-		return -1
+		return nil
 	}
 	return iterator.node.Value
 }
 
 // Key returns the current element's key.
 // Does not modify the state of the iterator.
-func (iterator *Iterator) Key() int {
+func (iterator *Iterator) Key() interface{} {
 	if iterator.node == nil {
-		return -1
+		return nil
 	}
 	return iterator.node.Key
 }
@@ -544,7 +597,7 @@ type IteratorWithIndex interface {
 
 	// Value returns the current element's value.
 	// Does not modify the state of the iterator.
-	Value() int
+	Value() interface{}
 
 	// Index returns the current element's index.
 	// Does not modify the state of the iterator.
@@ -570,11 +623,11 @@ type IteratorWithKey interface {
 
 	// Value returns the current element's value.
 	// Does not modify the state of the iterator.
-	Value() int
+	Value() interface{}
 
 	// Key returns the current element's key.
 	// Does not modify the state of the iterator.
-	Key() int
+	Key() interface{}
 
 	// Begin resets the iterator to its initial state (one-before-first)
 	// Call Next() to fetch the first element if any.
