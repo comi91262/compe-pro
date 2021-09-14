@@ -1,7 +1,5 @@
 package slice
 
-import "sort"
-
 func sum(a []int) int {
 	r := 0
 	for i := range a {
@@ -87,18 +85,15 @@ func enumarate(size, init, inc int) []int {
 }
 
 // 最小除外数 (min-exclude) を求める
-// 重複集合にも対応している
-func mex(a []int) int {
-	sort.Ints(a)
-	mx := 0
-	for _, x := range a {
-		if x < mx {
-			continue
-		}
-		if x != mx {
-			break
-		}
-		mx++
+func mex(arg ...int) int {
+	m := map[int]int{}
+	for _, x := range arg {
+		m[x]++
 	}
-	return mx
+
+	for i := 0; ; i++ {
+		if m[i] == 0 {
+			return i
+		}
+	}
 }

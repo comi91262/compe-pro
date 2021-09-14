@@ -27,6 +27,18 @@ func min(arg ...int) int {
 	return min
 }
 
+func minElement(arg ...int) int {
+	min := arg[0]
+	me := 0
+	for i, x := range arg {
+		if min > x {
+			min = x
+			me = i
+		}
+	}
+	return me
+}
+
 func max(arg ...int) int {
 	max := arg[0]
 	for _, x := range arg {
@@ -35,6 +47,18 @@ func max(arg ...int) int {
 		}
 	}
 	return max
+}
+
+func maxElement(arg ...int) int {
+	max := arg[0]
+	me := 0
+	for i, x := range arg {
+		if max < x {
+			max = x
+			me = i
+		}
+	}
+	return me
 }
 
 func mod(x, y int) int {
@@ -158,28 +182,30 @@ func combination(n, k int) int {
 	return r
 }
 
-func makePrimes(n int) []int {
-	r := []int{}
-	prime := make([]int, n+1)
-	for i := 0; i < n+1; i++ {
-		prime[i] = 1
+func makePrimes(n int) (primes []int) {
+	prime := make([]bool, n+1)
+	for i := 0; i <= n; i++ {
+		prime[i] = true
 	}
 
-	prime[0], prime[1] = 0, 0
-	for p := 2; p*p < n; p++ {
-		if prime[p] > 0 {
-			for x := 0; p*(x+2) <= n; x++ {
-				prime[p*(x+2)] = 0
-			}
+	prime[0], prime[1] = false, false
+	for i := 2; i*i <= n; i++ {
+		if !prime[i] {
+			continue
 		}
-	}
-	for p := 2; p < n+1; p++ {
-		if prime[p] > 0 {
-			r = append(r, p)
+		for j := i * i; j <= n; j += i {
+			prime[j] = false
 		}
 	}
 
-	return r
+	for i := 2; i <= n; i++ {
+		if !prime[i] {
+			continue
+		}
+
+		primes = append(primes, i)
+	}
+	return
 }
 
 // 約数列挙
