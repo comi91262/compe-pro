@@ -1,46 +1,58 @@
 package algo
 
-// Library Check 検証済
-// RMQ(Range Min Query): [0, n) について、最小値を管理する構造体
+// [0, n) について、最小値を管理する構造体
 type RMQ struct {
 	n    int
-	data []int
+	x    []int
+	unit int
+	op   func(x ...int) int
 }
 
-func (r *RMQ) Create(n int) {
-	r.data = make([]int, n*4)
-	var x int = 1
-	for n > x {
-		x *= 2
+func (rmq *RMQ) Create(seq []int) {
+	rmq.n = len(seq)
+	rmq.x = make([]int, len(seq)*2)
+	rmq.unit = 1 << 60
+	rmq.op = min
+
+	for i := range rmq.x {
+		rmq.x[i] = rmq.unit
 	}
-	r.n = x
+	for i, x := range seq {
+		rmq.x[i+len(seq)] = x
+	}
+	for i := len(seq) - 1; i > 0; i-- {
+		rmq.x[i] = rmq.op(rmq.x[i<<1], rmq.x[i<<1|1])
+	}
 }
 
 // i 番目の要素をxに更新。O(log(n))
-func (r *RMQ) Update(i, x int) {
-	i += r.n - 1
-	r.data[i] = x
-	for i > 0 {
-		i = (i - 1) / 2 // parent
-		r.data[i] = min(r.data[i*2+1], r.data[i*2+2])
+func (rmq *RMQ) Update(i, x int) {
+	i += rmq.n
+	rmq.x[i] = x
+	for i > 1 {
+		i >>= 1
+		rmq.x[i] = rmq.op(rmq.x[i<<1], rmq.x[i<<1|1])
 	}
 }
 
-func (r *RMQ) Get(i int) int {
-	i += r.n - 1
-	return r.data[i]
-}
+// [l,r) での最小の要素を取得。O(log(n))
+func (rmq *RMQ) Query(l, r int) int {
+	l += rmq.n
+	r += rmq.n
+	vl := rmq.unit
+	vr := rmq.unit
 
-// [a,b) での最小の要素を取得。O(log(n))
-func (r *RMQ) Query(a, b int) int { return r.querySub(a, b, 0, 0, r.n) }
-func (rmq *RMQ) querySub(a, b, k, l, r int) int {
-	if r <= a || b <= l {
-		return 1 << 60
-	} else if a <= l && r <= b {
-		return rmq.data[k]
-	} else {
-		vl := rmq.querySub(a, b, k*2+1, l, (l+r)/2)
-		vr := rmq.querySub(a, b, k*2+2, (l+r)/2, r)
-		return min(vl, vr)
+	for l < r {
+		if l&1 > 0 {
+			vl = rmq.op(vl, rmq.x[l])
+			l += 1
+		}
+		if r&1 > 0 {
+			r -= 1
+			vr = rmq.op(rmq.x[r], vr)
+		}
+		l >>= 1
+		r >>= 1
 	}
+	return rmq.op(vl, vr)
 }
