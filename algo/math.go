@@ -16,6 +16,13 @@ func abs(x int) int {
 	}
 }
 
+func add(arg ...int) (sum int) {
+	for i := range arg {
+		sum += arg[i]
+	}
+	return
+}
+
 // x = y のとき 一番左のものを返す (std::min)
 func min(arg ...int) int {
 	min := arg[0]

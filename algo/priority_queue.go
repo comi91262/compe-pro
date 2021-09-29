@@ -1,34 +1,78 @@
 package algo
 
-type Item struct {
-	value    int
-	priority int
-	index    int
+import "container/heap"
+
+// QItem represents the interface to be implemented stored in this queue
+type QItem interface {
+	Less(item QItem) bool
 }
 
-type PriorityQueue []*Item
+// priorityQueueImpl for the underlying implementation of priority queues
+type priorityQueueImpl []QItem
 
-func (pq PriorityQueue) Len() int { return len(pq) }
-func (pq PriorityQueue) Less(i, j int) bool {
-	return pq[i].priority < pq[j].priority
+// Len get queue length
+func (pqi priorityQueueImpl) Len() int {
+	return len(pqi)
 }
-func (pq PriorityQueue) Swap(i, j int) {
-	pq[i], pq[j] = pq[j], pq[i]
-	pq[i].index = i
-	pq[j].index = j
+
+// Less is used for element comparison
+func (pqi priorityQueueImpl) Less(i, j int) bool {
+	return pqi[i].Less(pqi[j])
 }
-func (pq *PriorityQueue) Push(x interface{}) {
-	n := len(*pq)
-	item := x.(*Item)
-	item.index = n
-	*pq = append(*pq, item)
+
+// Swap
+func (pqi priorityQueueImpl) Swap(i, j int) {
+	pqi[i], pqi[j] = pqi[j], pqi[i]
 }
-func (pq *PriorityQueue) Pop() interface{} {
-	old := *pq
+
+// Push is used to push an object into the queue
+func (pqi *priorityQueueImpl) Push(x interface{}) {
+	item := x.(QItem)
+	*pqi = append(*pqi, item)
+}
+
+// Pop pops an object out of the queue
+func (pqi *priorityQueueImpl) Pop() interface{} {
+	old := *pqi
 	n := len(old)
 	item := old[n-1]
-	old[n-1] = nil
-	item.index = -1
-	*pq = old[0 : n-1]
+	*pqi = old[0 : n-1]
 	return item
+}
+
+// PriorityQueue implements priority queue
+type PriorityQueue struct {
+	priorityQueueImpl
+}
+
+// NewPriorityQueue is used to build PriorityQueue
+func NewPriorityQueue() *PriorityQueue {
+	var pq PriorityQueue
+	heap.Init(&pq.priorityQueueImpl)
+	return &pq
+}
+
+// Push is used to push an object into the queue
+func (pq *PriorityQueue) Push(item QItem) {
+	heap.Push(&pq.priorityQueueImpl, item)
+}
+
+// Pop is used to pop an object from the queue
+func (pq *PriorityQueue) Pop() QItem {
+	return heap.Pop(&pq.priorityQueueImpl).(QItem)
+}
+
+// Front is used to get the minimum value in the current queue
+func (pq *PriorityQueue) Front() QItem {
+	// The first bit in the queue should be the minimum
+	return pq.priorityQueueImpl[0]
+}
+
+// Length is used to get the length of the current queue
+func (pq *PriorityQueue) Length() int {
+	return pq.priorityQueueImpl.Len()
+}
+
+func (i edge) Less(j QItem) bool {
+	return i.cap < j.(edge).cap
 }

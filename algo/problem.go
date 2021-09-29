@@ -1,5 +1,13 @@
 package algo
 
+// うるう年を計算する関数
+func isLeapYear(y int) (isOk bool) {
+	isOk = y%4 == 0
+	isOk = isOk && y%100 != 0
+	isOk = isOk || y%400 == 0
+	return
+}
+
 // 周期性を求める問題を解く関数
 func solveCycle(n, st, mod int) {
 	used := make([]int, mod)

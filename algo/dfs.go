@@ -38,8 +38,23 @@ func dfsD(n, m, d, k int, a []int, accum *[][]int) {
 	}
 }
 
-// 二次元配列をDFSする バックトラック付き
-func dfs2d(x, y int, s [][]string, used [][]bool) {
+func dfsDst(n, d int, a string, accum *[]string) {
+	if 0 < d && d <= n {
+		*accum = append(*accum, a)
+	}
+	if d == n {
+		return
+	}
+
+	for i := 0; i < 26; i++ {
+		a += string("a"[0] + byte(i))
+		dfsDst(n, d+1, a, accum)
+		a = a[:len(a)-1]
+	}
+}
+
+// 二次元配列をDFSする
+func dfs2d(h, w, x, y int, s [][]string, used [][]bool) {
 	if used[x][y] {
 		return
 	}
@@ -47,18 +62,17 @@ func dfs2d(x, y int, s [][]string, used [][]bool) {
 	var dx = [4]int{0, 1, 0, -1}
 	var dy = [4]int{1, 0, -1, 0}
 
-	h := len(used)
-	w := len(used[0])
-
 	used[x][y] = true
-
 	for i := 0; i < 4; i++ {
 		nx := x + dx[i]
 		ny := y + dy[i]
 		if nx < 0 || ny < 0 || nx >= h || ny >= w {
 			continue
 		}
-		dfs2d(x, y, s, used)
+		if s[nx][ny] != "#" {
+			continue
+		}
+		dfs2d(h, w, nx, ny, s, used)
 	}
 	used[x][y] = false
 }
