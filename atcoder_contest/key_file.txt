@@ -871,7 +871,6 @@ codefestival_2015_qualA_a
 codefestival_2015_qualB_a
 mujin_pc_2016_a
 m_solutions2020_b
-arc002_1
 arc012_1
 tenka1_2013_qualA_a
 arc026_1
