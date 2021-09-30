@@ -229,49 +229,32 @@ func divisor(n int) []int {
 	return r
 }
 
-// 素因数分解
-func getSpf(n int) []int {
-	var spf = make([]int, n+1)
+type PrimeFactor struct {
+	spf []int
+}
+
+func (p *PrimeFactor) Constitute(n int) {
+	p.spf = make([]int, n+1)
 
 	for i := 0; i <= n; i++ {
-		spf[i] = i
+		p.spf[i] = i
 	}
 	for i := 2; i*i <= n; i++ {
-		if spf[i] == i {
+		if p.spf[i] == i {
 			for j := i * i; j <= n; j += i {
-				if spf[j] == j {
-					spf[j] = i
+				if p.spf[j] == j {
+					p.spf[j] = i
 				}
 			}
 		}
 	}
-
-	return spf
 }
 
-func primeFactor(n int, spf []int) map[int]int {
+func (p *PrimeFactor) Do(n int) map[int]int {
 	var m = map[int]int{}
 	for n != 1 {
-		m[spf[n]]++
-		n /= spf[n]
-	}
-	return m
-}
-
-func primeFactor2(n int) map[int]int {
-	var m = map[int]int{}
-
-	for i := 2; i*i <= n; i++ {
-		if n%i != 0 {
-			continue
-		}
-		for n%i == 0 {
-			m[i]++
-			n /= i
-		}
-	}
-	if n != 1 {
-		m[n]++
+		m[p.spf[n]]++
+		n /= p.spf[n]
 	}
 	return m
 }
