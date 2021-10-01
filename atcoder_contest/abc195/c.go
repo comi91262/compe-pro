@@ -56,3 +56,40 @@ func main() {
 	fmt.Fprintf(writer, "%v\n", ans)
 
 }
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+var reader = bufio.NewReader(os.Stdin)
+var writer = bufio.NewWriter(os.Stdout)
+
+func main() {
+	defer writer.Flush()
+
+	var n int
+	fmt.Fscan(reader, &n)
+
+	ans := 0
+	if n >= 1000 {
+		ans += n - 1000 + 1
+	}
+	if n >= 1000000 {
+		ans += n - 1000000 + 1
+	}
+	if n >= 1000000000 {
+		ans += n - 1000000000 + 1
+	}
+	if n >= 1000000000000 {
+		ans += n - 1000000000000 + 1
+	}
+	if n >= 1000000000000000 {
+		ans += n - 1000000000000000 + 1
+	}
+
+	fmt.Fprintf(writer, "%v\n", ans)
+}
+
