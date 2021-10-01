@@ -73,18 +73,16 @@ func toMathDigits(x, base int) []int {
 	return r
 }
 
-// base進数でaである数字列を10進数の数字に直す, toDigitsの逆
+// base進数でaである文字列を10進数の数字に直す
 //
-//  [1,0,1,0], 2 -> 10
-//  [1,0], 10 -> 10
-func toNumber(a []int, base int) int {
-	cnt := 1
-	ans := 0
-	for i := 0; i < len(a); i++ {
-		ans += a[len(a)-1-i] * cnt
-		cnt *= base
+//  "1010", 2 -> 10
+//  "10", 10 -> 10
+func toNumber(a string, base int) (num int) {
+	for i := range a {
+		num *= base
+		num += int(a[i] - "0"[0])
 	}
-	return ans
+	return
 }
 
 // 2進数でxを表し, 各桁の数をスライスで返す

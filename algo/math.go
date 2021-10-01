@@ -259,6 +259,24 @@ func (p *PrimeFactor) Do(n int) map[int]int {
 	return m
 }
 
+func simplePrimeFactor(n int) map[int]int {
+	var m = map[int]int{}
+
+	for i := 2; i*i <= n; i++ {
+		if n%i != 0 {
+			continue
+		}
+		for n%i == 0 {
+			m[i]++
+			n /= i
+		}
+	}
+	if n != 1 {
+		m[n]++
+	}
+	return m
+}
+
 // nCk (mod p) の計算の高速化 (k <= n <= 10_000_000)
 // nCk = n! / k! / (n-k)! (mod p)
 //     = n! * (k!)^(-1) * ((n-k)!)^(-1) (mod p)
