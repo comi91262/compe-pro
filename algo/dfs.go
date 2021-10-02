@@ -22,19 +22,42 @@ func dfsColor(n, pre int, color []int, g [][]int) {
 	}
 }
 
-// 重複した数列を作る
-func dfsD(n, m, d, k int, a []int, accum *[][]int) {
-	if n == d {
+// x (lower <= x <= upper) を使った数列を全列挙する。重複あり
+// 0 <= x <= 2, size = 2 -> 00,01,02,10,11,12,20,21,22
+func makeDuplicatedNumberArray(size, depth, lower, upper int, a []int, accum *[][]int) {
+	if size == depth {
 		b := make([]int, len(a))
 		copy(b, a)
 		*accum = append(*accum, b)
 		return
 	}
 
-	for i := 0; k+i <= m; i++ {
-		a = append(a, k+i)
-		dfsD(n, m, d+1, k+i, a, accum)
+	for i := lower; i <= upper; i++ {
+		a = append(a, i)
+		makeDuplicatedNumberArray(size, depth+1, lower, upper, a, accum)
 		a = a[:len(a)-1]
+	}
+}
+
+// x (lower <= x <= upper) を使った数列を全列挙する。重複なし
+// 0 <= x <= 2, size = 2 -> 01,02,10,12,20,21
+func makeNumberArray(size, depth, lower, upper int, memo map[int]int, a []int, accum *[][]int) {
+	if size == depth {
+		b := make([]int, len(a))
+		copy(b, a)
+		*accum = append(*accum, b)
+		return
+	}
+
+	for i := lower; i <= upper; i++ {
+		if memo[i] > 0 {
+			continue
+		}
+		a = append(a, i)
+		memo[i]++
+		makeNumberArray(size, depth+1, lower, upper, memo, a, accum)
+		a = a[:len(a)-1]
+		memo[i]--
 	}
 }
 
