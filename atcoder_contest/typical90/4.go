@@ -51,3 +51,62 @@ func main() {
 	}
 
 }
+package main
+
+import (
+	"bufio"
+	. "bytes"
+	"os"
+	"strconv"
+	"strings"
+)
+
+var wr = bufio.NewWriterSize(os.Stdout, 100000)
+
+var l int
+var bytes []byte
+
+func scanInt() (result int) {
+	for bytes[l] < '0' || bytes[l] > '9' {
+		l++
+	}
+	for '0' <= bytes[l] && bytes[l] <= '9' {
+		result = result*10 + int(bytes[l]-'0')
+		l++
+	}
+	return result
+}
+
+func main() {
+	defer wr.Flush()
+
+	var a [2000][2000]int
+	var row [2000]int
+	var col [2000]int
+
+	var buf Buffer
+	buf.Grow(2000 * 2000)
+	buf.ReadFrom(os.Stdin)
+	bytes = buf.Bytes()
+
+	h, w := scanInt(), scanInt()
+
+	for i := 0; i < h; i++ {
+		for j := 0; j < w; j++ {
+			a[i][j] = scanInt()
+			row[i] += a[i][j]
+			col[j] += a[i][j]
+		}
+	}
+
+	for i := 0; i < h; i++ {
+		if i > 0 {
+			wr.WriteByte('\n')
+		}
+		ans := make([]string, w)
+		for j := 0; j < w; j++ {
+			ans[j] = strconv.Itoa(row[i] + col[j] - a[i][j])
+		}
+		wr.WriteString(strings.Join(ans, " "))
+	}
+}
