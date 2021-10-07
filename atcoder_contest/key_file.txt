@@ -143,7 +143,6 @@ typical90_v
 typical90_g
 typical90_j
 arc120_a
-typical90_d
 typical90_b
 typical90_a
 arc119_a
