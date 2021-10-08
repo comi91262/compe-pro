@@ -20,6 +20,20 @@ func rotateMatrix(a [][]string) {
 	}
 }
 
+func rotateClockwise(n, m int, g [][]string) (h [][]string) {
+	h = make([][]string, m)
+	for i := 0; i < m; i++ {
+		h[i] = make([]string, n)
+	}
+
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
+			h[j][n-i-1] = g[i][j]
+		}
+	}
+	return
+}
+
 // 平行移動量を計算する
 func diffMatrix(s [][]string, t [][]string) (int, int) {
 	n := len(s)
