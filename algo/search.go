@@ -1,27 +1,24 @@
 package algo
 
-func upperBound(value, boader int) bool {
-	return boader < value
-}
+// 答えで二分探索用
+func binarySearch() int {
+	l := -1
+	r := 1 << 60
 
-func lowerBound(value, boader int) bool {
-	return boader <= value
-}
+	for r-l > 1 {
+		mid := (l + r) / 2
 
-func binarySearch(a []int, boader int, criteria func(value, boader int) bool) int {
-	ng := -1
-	ok := len(a)
+		f := func(x int) bool {
+			return true
+		}
 
-	for abs(ok-ng) > 1 {
-		mid := (ok + ng) / 2
-
-		if criteria(a[mid], boader) {
-			ok = mid
+		if f(mid) {
+			r = mid
 		} else {
-			ng = mid
+			l = mid
 		}
 	}
-	return ok
+	return r
 }
 
 func bit2FullSearch(n int) {

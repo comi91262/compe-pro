@@ -1,5 +1,7 @@
 package algo
 
+import "fmt"
+
 // [0, n) について、最小値を管理する構造体
 type RMQ struct {
 	n    int
@@ -55,4 +57,14 @@ func (rmq *RMQ) Query(l, r int) int {
 		r >>= 1
 	}
 	return rmq.op(vl, vr)
+}
+
+func (rmq *RMQ) Debug() {
+	for i := 0; i < rmq.n; i++ {
+		if i > 0 {
+			fmt.Fprintf(wr, " ")
+		}
+		fmt.Fprintf(wr, "%v", rmq.x[i+rmq.n])
+	}
+	fmt.Fprintf(wr, "\n")
 }

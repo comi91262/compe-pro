@@ -26,6 +26,18 @@ func (q *queue) empty() bool {
 	return len(*q) == 0
 }
 
+type pair struct {
+	first  int
+	second int
+}
+
+type Edge struct {
+	from int
+	to   int
+	cap  int
+	flow int
+}
+
 type edge struct {
 	to  int
 	cap int
@@ -36,9 +48,11 @@ type Dinic struct {
 	g     [][]edge
 	level []int
 	iter  []int
+	pos   []pair
 }
 
 func (d *Dinic) AddEdge(from, to, cap int) {
+	d.pos = append(d.pos, pair{from, len(d.g[from])})
 	d.g[from] = append(d.g[from], edge{to: to, cap: cap, rev: len(d.g[to])})
 	d.g[to] = append(d.g[to], edge{to: from, cap: 0, rev: len(d.g[from]) - 1})
 
@@ -55,7 +69,8 @@ func (d *Dinic) bfs(s int) {
 	q.push(s)
 	for !q.empty() {
 		v := q.pop()
-		for _, e := range d.g[v] {
+		for i := 0; i < len(d.g[v]); i++ {
+			e := &d.g[v][i]
 			if e.cap > 0 && d.level[e.to] < 0 {
 				d.level[e.to] = d.level[v] + 1
 				q.push(e.to)
@@ -105,8 +120,23 @@ func (d *Dinic) MaxFlow(s, t int) int {
 	}
 }
 
+func (d *Dinic) getEdge(i int) Edge {
+	e := d.g[d.pos[i].first][d.pos[i].second]
+	re := d.g[e.to][e.rev]
+	return Edge{d.pos[i].first, e.to, e.cap + re.cap, re.cap}
+}
+
+func (d *Dinic) Edges() []Edge {
+	m := len(d.pos)
+	result := []Edge{}
+	for i := 0; i < m; i++ {
+		result = append(result, d.getEdge(i))
+	}
+	return result
+}
+
 func (d *Dinic) Create(n int) {
-	d.g = make([][]edge, 2*n+2)
-	d.level = make([]int, 2*n+2)
-	d.iter = make([]int, 2*n+2)
+	d.g = make([][]edge, n)
+	d.level = make([]int, n)
+	d.iter = make([]int, n)
 }
