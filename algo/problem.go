@@ -1,11 +1,36 @@
 package algo
 
+import "sort"
+
 // うるう年を計算する関数
 func isLeapYear(y int) (isOk bool) {
 	isOk = y%4 == 0
 	isOk = isOk && y%100 != 0
 	isOk = isOk || y%400 == 0
 	return
+}
+
+// 順位づけをする関数 (nlogn)
+// input: [100, 70, 90, 80, 90]
+// output: map{100:1,90:2,80:4,70:1}
+func makeRank(a []int) map[int]int {
+	m := map[int]int{}
+	for i := 0; i < len(a); i++ {
+		m[a[i]]++
+	}
+	keys := make([]int, 0, len(m))
+	for k := range m {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool { return keys[i] > keys[j] })
+
+	sum := 0
+	for i := 0; i < len(m); i++ {
+		cnt := m[keys[i]]
+		m[keys[i]] = sum + 1
+		sum += cnt
+	}
+	return m
 }
 
 // 周期性を求める問題を解く関数
