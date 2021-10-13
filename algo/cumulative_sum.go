@@ -1,35 +1,51 @@
 package algo
 
-type cumulativeSum2 [][]int
+type PrefixSum2 struct {
+	row int
+	col int
+	a   [][]int
+}
 
-func (c *cumulativeSum2) create(n, m int) {
-	*c = make([][]int, n+1)
-	for i := 0; i < n+1; i++ {
-		(*c)[i] = make([]int, m+1)
+func NewPrefixSum(n, m int) *PrefixSum2 {
+	a := make([][]int, n)
+	for i := 0; i < n; i++ {
+		a[i] = make([]int, m)
 	}
+
+	return &PrefixSum2{n, m, a}
 }
 
-func (c cumulativeSum2) add(x, y, v int) {
-	c[x+1][y+1] += v
+func (p *PrefixSum2) Add(x, y, v int) {
+	p.a[x][y] += v
 }
 
-func (c cumulativeSum2) build() {
-	n := len(c)
-	m := len(c[0])
-
-	for i := 1; i < n; i++ {
-		for j := 1; j < m; j++ {
-			c[i][j] += c[i][j-1]
+func (p *PrefixSum2) Build() {
+	for i := 0; i < p.row; i++ {
+		for j := 1; j < p.col; j++ {
+			p.a[i][j] += p.a[i][j-1]
 		}
 	}
 
-	for i := 1; i < m; i++ {
-		for j := 1; j < n; j++ {
-			c[j][i] += c[j-1][i]
+	for i := 0; i < p.col; i++ {
+		for j := 1; j < p.row; j++ {
+			p.a[j][i] += p.a[j-1][i]
 		}
 	}
 }
 
-func (c cumulativeSum2) get(sx, sy, tx, ty int) int {
-	return c[tx][ty] - c[tx][sy] - c[sx][ty] + c[sx][sy]
+func (p *PrefixSum2) Get(sx, sy, tx, ty int) (result int) {
+	if tx < 0 || ty < 0 {
+		return
+	}
+	result = p.a[tx][ty]
+	if sy >= 0 {
+		result -= p.a[tx][sy]
+	}
+	if sx >= 0 {
+		result -= p.a[sx][ty]
+	}
+	if sx >= 0 && sy >= 0 {
+		result += p.a[sx][sy]
+	}
+	return
 }
