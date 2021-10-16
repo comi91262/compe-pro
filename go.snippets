@@ -1,3 +1,4 @@
+
 snippet c
 package main
 
@@ -77,8 +78,29 @@ func parseFloat(b []byte) float64 {
 	return f
 }
 
+func min(arg ...int) int {
+	min := arg[0]
+	for _, x := range arg {
+		if min > x {
+			min = x
+		}
+	}
+	return min
+}
+func max(arg ...int) int {
+	max := arg[0]
+	for _, x := range arg {
+		if max < x {
+			max = x
+		}
+	}
+	return max
+}
+
 func main() {
 	defer wr.Flush()
+	sc.Split(bufio.ScanWords)
+	sc.Buffer(make([]byte, 10000), 1001001)
 }
 endsnippet
 
@@ -95,14 +117,14 @@ snippet "vf|vaf|varf" "" rb
 $1 := scanFloat()
 endsnippet
 
-snippet "vsli|vasli|varsli" "" rb
+snippet "vs" "" rb
 $1 := make([]int, $2) 
 endsnippet
 
 snippet "vs2" "" rb
 $1 := make([][]int, $2)
 for i := 0; i < $2; i++ {
-	$1[i] = make([]int, $3)
+    $1[i] = make([]int, $3)
 }
 endsnippet
 
@@ -111,16 +133,13 @@ m := map[$1]int{}
 endsnippet
 
 snippet is
-$1 := make([]int, $2)
-for i := 0; i < $2; i++ {
-	$1[i] = scanInt()
-}
+$1 := scanInts($2)
 endsnippet
 
 snippet is2
 $1 := make([][]int, $2)
 for i := 0; i < $2; i++ {
-	$1[i][j] = scanInts($2)
+	$1[i] = scanInts($3)
 }
 endsnippet
 
@@ -153,6 +172,9 @@ endsnippet
 snippet o
 fmt.Fprintf(wr, "%v\n", $1)
 endsnippet
+snippet o2
+fmt.Fprintf(wr, "%v %v\n", $1, $2)
+endsnippet
 
 snippet os
 for i := 0; i < $1; i++ {
@@ -178,15 +200,17 @@ endsnippet
 snippet odp
 func printer(a [][]int, limit int) {
 	for i := 0; i < len(a); i++ {
+		row := ""
 		for j := 0; j < len(a[0]); j++ {
 			if a[i][j] >= limit {
-				fmt.Fprintf(wr, "%5v ", "x")
+				row += fmt.Sprintf("%5v", "x")
 				continue
 			}
-			fmt.Fprintf(wr, "%5v ", a[i][j])
+			row += fmt.Sprintf("%5v", a[i][j])
 		}
-		fmt.Fprintf(wr, "\n")
+		fmt.Fprintf(wr, "%v\n", row)
 	}
+	fmt.Fprintf(wr, "\n")
 }
 endsnippet
 
@@ -241,6 +265,19 @@ func abs(x int) int {
 	}
 }
 endsnippet
+
+
+snippet chmin
+func chmin(x *int, y int) {
+	*x = min(*x, y)
+}
+endsnippet
+snippet chmax
+func chmax(x *int, y int) {
+	*x = max(*x, y)
+}
+endsnippet
+
 
 snippet min
 func min(arg ...int) int {
@@ -350,32 +387,7 @@ func (q *queue) empty() bool {
 endsnippet
 
 snippet search
-func abs(x int) int {
-	if x >= 0 {
-		return x
-	} else {
-		return x * -1
-	}
-}
-func lowerBound(value, boader int) bool {
-	return boader <= value
-}
-
-func binarySearch(a []int, boader int, criteria func(value, boader int) bool) int {
-	ng := -1
-	ok := len(a)
-
-	for abs(ok-ng) > 1 {
-		mid := (ok + ng) / 2
-
-		if criteria(a[mid], boader) {
-			ok = mid
-		} else {
-			ng = mid
-		}
-	}
-	return ok
-}
+sort.Search($1, func(j int) bool { return $2 <= $3 })
 endsnippet
 
 snippet fact

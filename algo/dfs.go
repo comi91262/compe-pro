@@ -92,7 +92,7 @@ func dfs2d(h, w, x, y int, s [][]string, used [][]bool) {
 		if nx < 0 || ny < 0 || nx >= h || ny >= w {
 			continue
 		}
-		if s[nx][ny] != "#" {
+		if s[nx][ny] == "#" {
 			continue
 		}
 		dfs2d(h, w, nx, ny, s, used)
