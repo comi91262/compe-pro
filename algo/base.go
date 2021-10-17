@@ -7,11 +7,9 @@ import "errors"
 // '0' -> 0
 func byteToDigit(c byte) (int, error) {
 	n := c - 48
-
 	if n < 0 || 9 < n {
 		return int(c), errors.New("wrong number")
 	}
-
 	return int(n), nil
 }
 
@@ -80,7 +78,7 @@ func toMathDigits(x, base int) []int {
 func toNumber(a string, base int) (num int) {
 	for i := range a {
 		num *= base
-		num += int(a[i] - "0"[0])
+		num += int(a[i] - '0')
 	}
 	return
 }
