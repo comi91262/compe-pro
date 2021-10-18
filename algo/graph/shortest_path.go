@@ -1,4 +1,4 @@
-package algo
+package graph
 
 type node struct {
 	num  int

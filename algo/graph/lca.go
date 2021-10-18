@@ -1,4 +1,4 @@
-package algo
+package graph
 
 type LCA struct {
 	parent [][]int // parent[k][u]:= u の 2^k 先の親
