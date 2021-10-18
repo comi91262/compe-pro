@@ -1,18 +1,8 @@
-package algo
+package unionfind
 
 type UnionFind struct {
 	parent []int
 	size   []int
-}
-
-func (uf *UnionFind) Create(n int) {
-	uf.parent = make([]int, n)
-	uf.size = make([]int, n)
-
-	for i := 0; i < n; i++ {
-		uf.parent[i] = i
-		uf.size[i] = 1
-	}
 }
 
 func (uf *UnionFind) root(x int) int {
@@ -47,4 +37,17 @@ func (uf *UnionFind) UniteTree(cx, cy int) {
 
 func (uf *UnionFind) Size(x int) int {
 	return uf.size[uf.root(x)]
+}
+
+func New(n int) *UnionFind {
+	uf := UnionFind{
+		parent: make([]int, n),
+		size:   make([]int, n),
+	}
+
+	for i := 0; i < n; i++ {
+		uf.parent[i] = i
+		uf.size[i] = 1
+	}
+	return &uf
 }
