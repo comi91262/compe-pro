@@ -1,5 +1,188 @@
 package algo
 
+func chmin(x *int, y int) {
+	*x = min(*x, y)
+}
+func chmax(x *int, y int) {
+	*x = max(*x, y)
+}
+
+// 最小, 配る, 一次元DP
+func flog1(n int, h []int) int {
+	dp := make([]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = 1 << 60
+	}
+
+	dp[0] = 0
+	for i := 0; i < n; i++ {
+		if i+1 < n {
+			chmin(&dp[i+1], dp[i]+abs(h[i]-h[i+1]))
+		}
+		if i+2 < n {
+			chmin(&dp[i+2], dp[i]+abs(h[i]-h[i+2]))
+		}
+	}
+	return dp[n-1]
+}
+
+// 最小, 配る, 一次元DP
+func flog2(n, k int, h []int) int {
+	dp := make([]int, n)
+	for i := 0; i < n; i++ {
+		dp[i] = 1 << 60
+	}
+
+	dp[0] = 0
+	for i := 0; i < n; i++ {
+		for j := 1; j <= k; j++ {
+			if i+j < n {
+				chmin(&dp[i+j], dp[i]+abs(h[i]-h[i+j]))
+			}
+		}
+	}
+	return dp[n-1]
+}
+
+	n := scanInt()
+	a := make([]int, n)
+	b := make([]int, n)
+	c := make([]int, n)
+	for i := 0; i < n; i++ {
+		a[i] = scanInt()
+		b[i] = scanInt()
+		c[i] = scanInt()
+	}
+
+	dp := make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		dp[i] = make([]int, 3)
+	}
+
+	for i := 0; i < n; i++ {
+		dp[i+1][0] += max(dp[i][1]+a[i], dp[i][2]+a[i])
+		dp[i+1][1] += max(dp[i][0]+b[i], dp[i][2]+b[i])
+		dp[i+1][2] += max(dp[i][0]+c[i], dp[i][1]+c[i])
+	}
+	fmt.Fprintf(wr, "%v\n", max(dp[n]...))
+
+	mw := scanInt()
+	w, v := scanPairInts(n)
+
+	dp := make([][]int, n+1)
+	for i := 0; i < n+1; i++ {
+		dp[i] = make([]int, mw+1)
+	}
+
+	for i := 0; i < n; i++ {
+		for j := 0; j <= mw; j++ {
+			chmax(&dp[i+1][j], dp[i][j])
+			if j+w[i] <= mw {
+				chmax(&dp[i+1][j+w[i]], dp[i][j]+v[i])
+			}
+		}
+	}
+
+	dp := make([][]int, n+1)
+	mv := 100001
+	for i := 0; i < n+1; i++ {
+		dp[i] = make([]int, mv)
+		for j := 0; j < mv; j++ {
+			dp[i][j] = 1 << 60
+		}
+	}
+
+	dp[0][0] = 0
+	for i := 0; i < n; i++ {
+		for j := 0; j < mv; j++ {
+			chmin(&dp[i+1][j], dp[i][j])
+			if j+v[i] < mv {
+				chmin(&dp[i+1][j+v[i]], dp[i][j]+w[i])
+			}
+		}
+	}
+	ans := 0
+	for i := 0; i < mv; i++ {
+		if dp[n][i] <= mw {
+			chmax(&ans, i)
+		}
+	}
+
+	s := scanString()
+	t := scanString()
+
+	dp := make([][]int, len(s)+1)
+	for i := 0; i < len(s)+1; i++ {
+		dp[i] = make([]int, len(t)+1)
+	}
+
+	for i := 0; i < len(s); i++ {
+		for j := 0; j < len(t); j++ {
+			if s[i] == t[j] {
+				chmax(&dp[i+1][j+1], dp[i][j]+1)
+			} else {
+				chmax(&dp[i+1][j+1], max(dp[i+1][j], dp[i][j+1]))
+			}
+		}
+	}
+
+	ans := make([]rune, dp[len(s)][len(t)])
+	i, j, l := len(s), len(t), len(ans)
+	for l > 0 {
+		switch dp[i][j] {
+		case dp[i-1][j]:
+			i--
+		case dp[i][j-1]:
+			j--
+		case dp[i-1][j-1] + 1:
+			ans[l-1] = rune(s[i-1])
+			l--
+			i--
+			j--
+		}
+	}
+	fmt.Fprintf(wr, "%v\n", string(ans))
+
+	dp := make([][]float64, n+1)
+	for i := 0; i <= n; i++ {
+		dp[i] = make([]float64, n+1)
+		for j := 0; j <= n; j++ {
+		}
+	}
+
+	dp[0][0] = 1.0
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			dp[i+1][j] += dp[i][j] * (1.0 - p[i])
+			dp[i+1][j+1] += dp[i][j] * p[i]
+		}
+	}
+
+	ans := 0.0
+	for i := 0; i <= n; i++ {
+		if n-i < i {
+			ans += dp[n][i]
+		}
+	}
+
+
+	dp := make([]bool, k+1)
+
+	dp[0] = false
+	for i := 0; i <= k; i++ {
+		for j := 0; j < n; j++ {
+			if i-a[j] >= 0 && !dp[i-a[j]] {
+				dp[i] = true
+			}
+		}
+	}
+	if dp[k] {
+		fmt.Fprintf(wr, "%v\n", "First")
+	} else {
+		fmt.Fprintf(wr, "%v\n", "Second")
+	}
+
+
 // DFSによる木DP
 func treeDp(n, pre int) {
 	var dp [100001]int

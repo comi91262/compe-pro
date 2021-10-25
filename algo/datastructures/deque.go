@@ -1,4 +1,4 @@
-package datastructure
+package datastructures
 
 type Deque struct {
 	cl   int

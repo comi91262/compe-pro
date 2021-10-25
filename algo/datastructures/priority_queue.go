@@ -1,4 +1,4 @@
-package datastructure
+package datastructures
 
 import "container/heap"
 
