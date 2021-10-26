@@ -8,6 +8,7 @@ func chmax(x *int, y int) {
 }
 
 // 最小, 配る, 一次元DP
+// 階段を登るDP
 func flog1(n int, h []int) int {
 	dp := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -27,6 +28,7 @@ func flog1(n int, h []int) int {
 }
 
 // 最小, 配る, 一次元DP
+// 階段を登るDP
 func flog2(n, k int, h []int) int {
 	dp := make([]int, n)
 	for i := 0; i < n; i++ {
@@ -44,16 +46,8 @@ func flog2(n, k int, h []int) int {
 	return dp[n-1]
 }
 
-	n := scanInt()
-	a := make([]int, n)
-	b := make([]int, n)
-	c := make([]int, n)
-	for i := 0; i < n; i++ {
-		a[i] = scanInt()
-		b[i] = scanInt()
-		c[i] = scanInt()
-	}
-
+// 条件に従って、変数を追加する系DP
+func vacation(n int, a, b, c []int) int {
 	dp := make([][]int, n+1)
 	for i := 0; i < n+1; i++ {
 		dp[i] = make([]int, 3)
@@ -64,11 +58,11 @@ func flog2(n, k int, h []int) int {
 		dp[i+1][1] += max(dp[i][0]+b[i], dp[i][2]+b[i])
 		dp[i+1][2] += max(dp[i][0]+c[i], dp[i][1]+c[i])
 	}
-	fmt.Fprintf(wr, "%v\n", max(dp[n]...))
+	return max(dp[n]...)
+}
 
-	mw := scanInt()
-	w, v := scanPairInts(n)
-
+// ナップサックDP
+func knapsack1(n, mw int, w, v []int) int {
 	dp := make([][]int, n+1)
 	for i := 0; i < n+1; i++ {
 		dp[i] = make([]int, mw+1)
@@ -82,7 +76,11 @@ func flog2(n, k int, h []int) int {
 			}
 		}
 	}
+	return dp[n][mw]
+}
 
+// ナップサックDP 亜種 価値の最大化ではなく重さの最小化
+func knapsack2(n, mw int, w, v []int) int {
 	dp := make([][]int, n+1)
 	mv := 100001
 	for i := 0; i < n+1; i++ {
@@ -101,16 +99,17 @@ func flog2(n, k int, h []int) int {
 			}
 		}
 	}
-	ans := 0
+	value := 0
 	for i := 0; i < mv; i++ {
 		if dp[n][i] <= mw {
-			chmax(&ans, i)
+			chmax(&value, i)
 		}
 	}
+	return value
+}
 
-	s := scanString()
-	t := scanString()
-
+// LCS
+func lcs(s, t string) string {
 	dp := make([][]int, len(s)+1)
 	for i := 0; i < len(s)+1; i++ {
 		dp[i] = make([]int, len(t)+1)
@@ -141,8 +140,32 @@ func flog2(n, k int, h []int) int {
 			j--
 		}
 	}
-	fmt.Fprintf(wr, "%v\n", string(ans))
+	return string(ans)
+}
 
+// 経路計算DP
+func gred1(h, w int, s [][]string) int {
+	dp := make([][]int, h)
+	for i := 0; i < h; i++ {
+		dp[i] = make([]int, w)
+	}
+
+	dp[0][0] = 1
+	for i := 0; i < h; i++ {
+		for j := 0; j < w; j++ {
+			if i+1 < h && s[i+1][j] != "#" {
+				dp[i+1][j] += dp[i][j]
+			}
+			if j+1 < w && s[i][j+1] != "#" {
+				dp[i][j+1] += dp[i][j]
+			}
+		}
+	}
+	return dp[h-1][w-1]
+}
+
+//  確率DP
+func coins(n int, p []float64) float64 {
 	dp := make([][]float64, n+1)
 	for i := 0; i <= n; i++ {
 		dp[i] = make([]float64, n+1)
@@ -158,14 +181,17 @@ func flog2(n, k int, h []int) int {
 		}
 	}
 
-	ans := 0.0
+	pro := 0.0
 	for i := 0; i <= n; i++ {
 		if n-i < i {
-			ans += dp[n][i]
+			pro += dp[n][i]
 		}
 	}
+	return pro
+}
 
-
+// 後退解析DP
+func Stones(n, k int, a []int) bool {
 	dp := make([]bool, k+1)
 
 	dp[0] = false
@@ -176,12 +202,8 @@ func flog2(n, k int, h []int) int {
 			}
 		}
 	}
-	if dp[k] {
-		fmt.Fprintf(wr, "%v\n", "First")
-	} else {
-		fmt.Fprintf(wr, "%v\n", "Second")
-	}
-
+	return dp[k]
+}
 
 // DFSによる木DP
 func treeDp(n, pre int) {

@@ -5,6 +5,30 @@ type rect struct {
 	w int
 }
 
+type stack []rect
+
+func (s *stack) push(n rect) {
+	*s = append(*s, n)
+}
+
+func (s *stack) pop() rect {
+	v := (*s)[len(*s)-1]
+	(*s) = (*s)[:len(*s)-1]
+	return v
+}
+
+func (s *stack) front() rect {
+	return (*s)[len(*s)-1]
+}
+
+func (s *stack) last() rect {
+	return (*s)[0]
+}
+
+func (s *stack) empty() bool {
+	return len(*s) == 0
+}
+
 func maxAreaInHistgram(hist []int) (mx, w int) {
 	h := []int{}
 	for _, x := range hist {

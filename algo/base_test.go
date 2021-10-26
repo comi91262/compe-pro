@@ -27,19 +27,19 @@ func TestStrToDigits(t *testing.T) {
 }
 
 func TestToDigits(t *testing.T) {
-	if got := toDigits(10, 10); !testEqSlice(got, []int{1, 0}) {
+	if got := toDigits(10, 10); !testEqSlice(got, []int{0, 1}) {
 		t.Errorf("error: got %v", got)
 	}
-	if got := toDigits(10, 2); !testEqSlice(got, []int{1, 0, 1, 0}) {
+	if got := toDigits(10, 2); !testEqSlice(got, []int{0, 1, 0, 1}) {
 		t.Errorf("error: got %v", got)
 	}
 }
 
 func TestToNumber(t *testing.T) {
-	if got := toNumber([]int{1, 0, 1, 0}, 2); got != 10 {
+	if got := toNumber("1010", 2); got != 10 {
 		t.Errorf("error: got %v", got)
 	}
-	if got := toNumber([]int{1, 0}, 10); got != 10 {
+	if got := toNumber("10", 10); got != 10 {
 		t.Errorf("error: got %v", got)
 	}
 }

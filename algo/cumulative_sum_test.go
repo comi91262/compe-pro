@@ -6,9 +6,7 @@ import (
 
 func TestCumulativeSum0(t *testing.T) {
 
-	c := cumulativeSum2{}
-
-	c.create(3, 2)
+	c := NewPrefixSum(3, 2)
 
 	var a = [][]int{
 		{2, 4},
@@ -17,13 +15,12 @@ func TestCumulativeSum0(t *testing.T) {
 	}
 	for i := 0; i < 3; i++ {
 		for j := 0; j < 2; j++ {
-			c.add(i, j, a[i][j])
+			c.Add(i, j, a[i][j])
 		}
 	}
 
-	c.build()
-
-	got := c.get(0, 0, 3, 2)
+	c.Build()
+	got := c.Get(-1, -1, 2, 1)
 	want := 26
 
 	if got != want {

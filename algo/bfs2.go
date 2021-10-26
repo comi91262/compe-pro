@@ -1,5 +1,10 @@
 package algo
 
+type point struct {
+	x int
+	y int
+}
+
 type queue []point
 
 func (q *queue) push(n point) {
@@ -21,7 +26,7 @@ func (q *queue) empty() bool {
 }
 
 // 単一コストの最短経路問題を BFS でとく (二次元版)
-func bfs2MinDist(h, w, sx, sy int, s [][]string) [][]int {
+func bfs2(h, w, sx, sy int, s [][]string) [][]int {
 	const inf = 1 << 60
 	var dx = [4]int{1, 0, -1, 0}
 	var dy = [4]int{0, 1, 0, -1}

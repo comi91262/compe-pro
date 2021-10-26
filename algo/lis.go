@@ -19,7 +19,7 @@ func lis(a []int) (lis []int) {
 
 	b := make([]int, 0)
 	for i := 0; i < len(a); i++ {
-		cnt := sort.Search(len(b), func(j int) bool { return a[i] < b[j] })
+		cnt := sort.Search(len(b), func(j int) bool { return a[i] <= b[j] })
 
 		if cnt == len(b) {
 			b = append(b, a[i])
