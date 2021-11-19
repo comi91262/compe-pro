@@ -12,7 +12,7 @@ func isLeapYear(y int) (isOk bool) {
 
 // 順位づけをする関数 (nlogn)
 // input: [100, 70, 90, 80, 90]
-// output: map{100:1,90:2,80:4,70:1}
+// output: map{100:1,90:2,80:4,70:5}
 func makeRank(a []int) map[int]int {
 	m := map[int]int{}
 	for i := 0; i < len(a); i++ {
