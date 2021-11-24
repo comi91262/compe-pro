@@ -20,3 +20,11 @@ func median(a []int) int {
 		return a[n/2]
 	}
 }
+
+func selectPivot(a []int, left, right int) int {
+	medians := []int{}
+	for i := left; i+4 <= right; i += 5 {
+		medians = append(medians, median(a[i:i+5]))
+	}
+	return median(medians)
+}
