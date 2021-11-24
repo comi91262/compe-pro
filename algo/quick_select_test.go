@@ -1,6 +1,9 @@
 package algo
 
-import "testing"
+import (
+	"sort"
+	"testing"
+)
 
 func TestInsertionSort(t *testing.T) {
 	a := []int{8, 7, 6, 5, 4, 3, 2, 1}
@@ -35,7 +38,7 @@ func TestMedian1(t *testing.T) {
 func TestSelectPivot0(t *testing.T) {
 	a := []int{8, 7, 6, 5, 4, 3, 2, 1}
 	got := selectPivot(a, 0, len(a)-1)
-	want := 6
+	want := 2
 
 	if got != want {
 		t.Errorf("Error 0: %v", got)
@@ -49,5 +52,22 @@ func TestSelectPivot1(t *testing.T) {
 
 	if got != want {
 		t.Errorf("Error 0: %v", got)
+	}
+}
+
+func TestQuickSelect(t *testing.T) {
+	a := []int{1, 3, 13, 76, 99, 8, 16, 20, 25, 37, 7, 22, 28, 30, 47, 40, 43, 49, 52, 57, 5, 37, 70, 75, 85, 23, 33, 50, 77, 78}
+	b := make([]int, len(a))
+	copy(b, a)
+	sort.Ints(b)
+
+	gots := []int{}
+	for i := 0; i < len(a); i++ {
+		gots = append(gots, QuickSelect(a, 0, len(a)-1, i))
+	}
+
+	if !testEqSlice(gots, a) {
+		t.Errorf("Error 0: %v", b)
+		t.Errorf("Error 0: %v", gots)
 	}
 }
