@@ -1,35 +1,31 @@
 package algo
 
-func insertionSort(a []int) {
-	for i := 0; i < len(a); i++ {
+func insertionSort(a []int, left, right int) {
+	for i := left; i <= right; i++ {
 		j := i
-		for (j > 0) && (a[j-1] > a[j]) {
+		for (j > left) && (a[j-1] > a[j]) {
 			a[j-1], a[j] = a[j], a[j-1]
 			j--
 		}
 	}
 }
 
-func median(a []int) int {
-	n := len(a)
-	insertionSort(a)
-
-	if n%2 == 0 {
-		return a[n/2-1]
-	} else {
-		return a[n/2]
-	}
+func median(a []int, left, right int) int {
+	insertionSort(a, left, right)
+	return a[left+(right-left)/2]
 }
 
 func selectPivot(a []int, left, right int) int {
+	if right-left < 5 {
+		return median(a, left, right)
+	}
+
 	medians := []int{}
-	for i := left; i < right; i += 5 {
-		medians = append(medians, median(a[i:min(i+5, len(a))]))
+	for i := left; i+4 <= right; i += 5 {
+		medians = append(medians, median(a, i, i+4))
 	}
-	if len(medians) == 0 {
-		return a[left]
-	}
-	return median(medians)
+	return innerSelect(medians, 0, len(medians)-1, (len(medians)-1)/2)
+
 }
 
 // Hoare’s Partition Scheme
@@ -54,12 +50,10 @@ func partition(a []int, left, right, pivot int) int {
 		a[i], a[j] = a[j], a[i]
 	}
 }
-
-func QuickSelect(a []int, left, right, kth int) int {
-	var pivotIndex int
+func innerSelect(a []int, left, right, kth int) int {
 	for left != right {
-		pivotIndex = selectPivot(a, left, right)
-		pivotIndex = partition(a, left, right, pivotIndex)
+		pivot := selectPivot(a, left, right)
+		pivotIndex := partition(a, left, right, pivot)
 
 		switch {
 		case kth == pivotIndex:
@@ -71,4 +65,8 @@ func QuickSelect(a []int, left, right, kth int) int {
 		}
 	}
 	return a[left]
+}
+
+func QuickSelect(a []int, left, right, kth int) int {
+	return innerSelect(a, left, right, kth)
 }
