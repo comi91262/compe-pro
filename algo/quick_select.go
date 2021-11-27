@@ -15,56 +15,52 @@ func median(a []int, left, right int) int {
 	return a[left+(right-left)/2]
 }
 
-func selectPivot(a []int, left, right int) int {
-	if right-left < 5 {
-		return median(a, left, right)
-	}
-
-	medians := []int{}
-	for i := left; i+4 <= right; i += 5 {
-		medians = append(medians, median(a, i, i+4))
-	}
-	return innerSelect(medians, 0, len(medians)-1, (len(medians)-1)/2)
-
-}
-
-// Hoare’s Partition Scheme
 func partition(a []int, left, right, pivot int) int {
 	i := left - 1
 	j := right + 1
 
 	for {
-		i += 1
+		i, j = i+1, j-1
 		for a[i] < pivot {
 			i += 1
 		}
-
-		j -= 1
 		for a[j] > pivot {
 			j -= 1
 		}
-
-		if i >= j {
+		if i < j {
+			a[i], a[j] = a[j], a[i]
+		} else {
 			return j
 		}
-		a[i], a[j] = a[j], a[i]
 	}
 }
-func innerSelect(a []int, left, right, kth int) int {
-	for left != right {
-		pivot := selectPivot(a, left, right)
-		pivotIndex := partition(a, left, right, pivot)
 
-		switch {
-		case kth == pivotIndex:
-			return a[kth]
-		case kth < pivotIndex:
-			right = pivotIndex - 1
-		case kth > pivotIndex:
-			left = pivotIndex + 1
-		}
+func selectPivot(a []int, left, right int) int {
+	if right-left < 5 {
+		return median(a, left, right)
 	}
-	return a[left]
+
+	for i := left; i+4 <= right; i += 5 {
+		insertionSort(a, i, i+4)
+		a[i+2], a[left+(i-left)/5] = a[left+(i-left)/5], a[i+2]
+	}
+
+	n := right - left + 1
+	return innerSelect(a, left, left+n/5-1, left+n/10-1)
+}
+
+func innerSelect(a []int, left, right, kth int) int {
+	if left == right {
+		return a[left]
+	}
+
+	pivot := selectPivot(a, left, right)
+	pivotIndex := partition(a, left, right, pivot)
+	if kth <= pivotIndex {
+		return innerSelect(a, left, pivotIndex, kth)
+	} else {
+		return innerSelect(a, pivotIndex+1, right, kth)
+	}
 }
 
 func QuickSelect(a []int, left, right, kth int) int {
